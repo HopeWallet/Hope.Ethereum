@@ -165,9 +165,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\AddressUtils.cs" />
     <Compile Include="src\ContractUtils.cs" />
+    <Compile Include="src\EthUtils.cs" />
     <Compile Include="src\GasUtils.cs" />
-    <Compile Include="src\NetworkUtils.cs" />
+    <Compile Include="src\NetworkProvider.cs" />
     <Compile Include="src\SolidityUtils.cs" />
+    <Compile Include="src\TransactionPoller.cs" />
     <Compile Include="src\WalletUtils.cs" />
   </ItemGroup>
   <ItemGroup />

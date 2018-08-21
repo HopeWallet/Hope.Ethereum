@@ -15,17 +15,17 @@ namespace NethereumUtils.Standard
             return SolidityUtils.ConvertFromUInt((await ethGetBalance.SendRequestAsync(address)).Value, 18);
         }
 
-        public static async Task SendEth(string privateKey, string addressTo, decimal amount)
+        public static async Task<TransactionPoller> SendEth(string privateKey, string addressTo, decimal amount)
         {
-            await SendEth(privateKey, addressTo, amount, await GasUtils.EstimateGasPrice(GasUtils.GasPriceTarget.Standard));
+            return await SendEth(privateKey, addressTo, amount, await GasUtils.EstimateGasPrice(GasUtils.GasPriceTarget.Standard));
         }
 
-        public static async Task SendEth(string privateKey, string addressTo, decimal amount, BigInteger gasPrice)
+        public static async Task<TransactionPoller> SendEth(string privateKey, string addressTo, decimal amount, BigInteger gasPrice)
         {
-            await SendEth(privateKey, addressTo, amount, gasPrice, await GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18)));
+            return await SendEth(privateKey, addressTo, amount, gasPrice, await GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18)));
         }
 
-        public static async Task SendEth(string privateKey, string addressTo, decimal amount, BigInteger gasPrice, BigInteger gasLimit)
+        public static async Task<TransactionPoller> SendEth(string privateKey, string addressTo, decimal amount, BigInteger gasPrice, BigInteger gasLimit)
         {
             BigInteger value = SolidityUtils.ConvertToUInt(amount, 18);
 
@@ -45,7 +45,7 @@ namespace NethereumUtils.Standard
                                             string.Empty);
 
             EthSendRawTransaction rawTransaction = new EthSendRawTransaction(NetworkProvider.GetWeb3().Client);
-            await rawTransaction.SendRequestAsync(signedTxData);
+            return new TransactionPoller(await rawTransaction.SendRequestAsync(signedTxData));
         }
     }
 }

@@ -36,9 +36,11 @@ namespace NethereumUtils.Tests
 
         //    BigInteger gasLimit = 75000;
         //    BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(readableGasPrice);
-        //    string privateKey = "0x215939f9664cc1a2ac9f004abea96586e81e57fc7c21a8204a1062bec915be8f";
+        //    string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
 
-        //    await EthUtils.SendEth(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount);
+        //    await EthUtils.SendEth(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount, gasPrice);
+        //        //.OnTransactionSuccessful(() => GetEthBalance())
+        //        //.OnTransactionFailure(() => GetEthSendGasLimit());
         //}
 
         //[TestMethod]
@@ -55,7 +57,7 @@ namespace NethereumUtils.Tests
         //    BigInteger value = SolidityUtils.ConvertToUInt(0.0402000333, 18);
         //    BigInteger gasLimit = 75000;
         //    BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(readableGasPrice);
-        //    string privateKey = "0x215939f9664cc1a2ac9f004abea96586e81e57fc7c21a8204a1062bec915be8f";
+        //    string privateKey = "0x215939f3664cc1a2ac9f000abaa9658de81657fc7c21a8a04a1062bec9156e8f";
         //    string contractAddress = "0x5831819C84C05DdcD2568dE72963AC9f1e6831b6";
 
         //    await ContractUtils.SendContractMessage(transfer, privateKey, contractAddress, gasPrice, gasLimit, value);

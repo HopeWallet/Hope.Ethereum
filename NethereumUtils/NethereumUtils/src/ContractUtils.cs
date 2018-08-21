@@ -25,31 +25,31 @@ namespace NethereumUtils.Standard
             return queryHandler.QueryAsync(contractAddress, function);
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress)
+        public static async Task<TransactionPoller> SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress)
             where TFunc : FunctionMessage, new()
         {
-            await SendContractMessage(function, privateKey, contractAddress, GasPriceTarget.Standard);
+            return await SendContractMessage(function, privateKey, contractAddress, GasPriceTarget.Standard);
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, GasPriceTarget gasPriceTarget)
+        public static async Task<TransactionPoller> SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, GasPriceTarget gasPriceTarget)
             where TFunc : FunctionMessage, new()
         {
-            await SendContractMessage(function, privateKey, contractAddress, await EstimateGasPrice(gasPriceTarget));
+            return await SendContractMessage(function, privateKey, contractAddress, await EstimateGasPrice(gasPriceTarget));
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice)
+        public static async Task<TransactionPoller> SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice)
             where TFunc : FunctionMessage, new()
         {
-            await SendContractMessage(function, privateKey, contractAddress, gasPrice, await EstimateContractGasLimit(function, contractAddress, new EthECKey(privateKey).GetPublicAddress()));
+            return await SendContractMessage(function, privateKey, contractAddress, gasPrice, await EstimateContractGasLimit(function, contractAddress, new EthECKey(privateKey).GetPublicAddress()));
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit)
+        public static async Task<TransactionPoller> SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit)
             where TFunc : FunctionMessage, new()
         {
-            await SendContractMessage(function, privateKey, contractAddress, gasPrice, gasLimit, 0);
+            return await SendContractMessage(function, privateKey, contractAddress, gasPrice, gasLimit, 0);
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value)
+        public static async Task<TransactionPoller> SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value)
             where TFunc : FunctionMessage, new()
         {
             EthECKey ethECKey = new EthECKey(privateKey);
@@ -68,7 +68,7 @@ namespace NethereumUtils.Standard
                                             function.CreateTransactionInput(contractAddress).Data);
 
             EthSendRawTransaction rawTransaction = new EthSendRawTransaction(NetworkProvider.GetWeb3().Client);
-            await rawTransaction.SendRequestAsync(signedTxData);
+            return new TransactionPoller(await rawTransaction.SendRequestAsync(signedTxData));
         }
     }
 }
