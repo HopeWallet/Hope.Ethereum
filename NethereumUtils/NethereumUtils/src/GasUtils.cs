@@ -1,9 +1,10 @@
 ﻿using Nethereum.Contracts;
 using Nethereum.Contracts.Extensions;
+using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth;
+using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Util;
-using System;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -19,7 +20,14 @@ namespace NethereumUtils.Standard
         /// </summary>
         public enum GasPriceTarget { Slow, Standard, Fast };
 
-        public static async Task<BigInteger> EstimateGasLimit<TFunc>(
+        public static async Task<BigInteger> EstimateEthGasLimit(string addressTo, BigInteger value)
+        {
+            CallInput callInput = new CallInput("", addressTo, new HexBigInteger(value));
+            EthEstimateGas estimateGasLimit = new EthEstimateGas(NetworkUtils.GetWeb3().Client);
+            return await estimateGasLimit.SendRequestAsync(callInput);
+        }
+
+        public static async Task<BigInteger> EstimateContractGasLimit<TFunc>(
             TFunc function,
             string contractAddress,
             string callerAddress) where TFunc : FunctionMessage, new()

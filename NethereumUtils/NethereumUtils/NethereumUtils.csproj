@@ -163,11 +163,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Address\AddressUtils.cs" />
-    <Compile Include="src\Contract\ContractUtils.cs" />
-    <Compile Include="src\Gas\GasUtils.cs" />
-    <Compile Include="src\Network\NetworkUtils.cs" />
-    <Compile Include="src\Solidity\SolidityUtils.cs" />
+    <Compile Include="src\AddressUtils.cs" />
+    <Compile Include="src\ContractUtils.cs" />
+    <Compile Include="src\GasUtils.cs" />
+    <Compile Include="src\NetworkUtils.cs" />
+    <Compile Include="src\SolidityUtils.cs" />
+    <Compile Include="src\WalletUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

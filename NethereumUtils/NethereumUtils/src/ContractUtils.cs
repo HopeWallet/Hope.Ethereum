@@ -40,7 +40,7 @@ namespace NethereumUtils.Standard
         public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice)
             where TFunc : FunctionMessage, new()
         {
-            await SendContractMessage(function, privateKey, contractAddress, gasPrice, await EstimateGasLimit(function, contractAddress, new EthECKey(privateKey).GetPublicAddress()));
+            await SendContractMessage(function, privateKey, contractAddress, gasPrice, await EstimateContractGasLimit(function, contractAddress, new EthECKey(privateKey).GetPublicAddress()));
         }
 
         public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit)
