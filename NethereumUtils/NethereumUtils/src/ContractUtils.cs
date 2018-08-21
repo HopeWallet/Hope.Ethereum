@@ -20,7 +20,7 @@ namespace NethereumUtils.Standard
             where TFunc : FunctionMessage, new()
             where TOut : IFunctionOutputDTO, new()
         {
-            var queryHandler = new QueryToDTOHandler<TFunc, TOut>(NetworkUtils.GetWeb3().Client, senderAddress);
+            var queryHandler = new QueryToDTOHandler<TFunc, TOut>(NetworkProvider.GetWeb3().Client, senderAddress);
 
             return queryHandler.QueryAsync(contractAddress, function);
         }
@@ -54,12 +54,12 @@ namespace NethereumUtils.Standard
         {
             EthECKey ethECKey = new EthECKey(privateKey);
 
-            InMemoryNonceService nonceService = new InMemoryNonceService(ethECKey.GetPublicAddress(), NetworkUtils.GetWeb3().Client);
+            InMemoryNonceService nonceService = new InMemoryNonceService(ethECKey.GetPublicAddress(), NetworkProvider.GetWeb3().Client);
 
             TransactionSigner signer = new TransactionSigner();
             string signedTxData = signer.SignTransaction(
                                             privateKey,
-                                            NetworkUtils.GetActiveNetwork(),
+                                            NetworkProvider.GetActiveNetworkChain(),
                                             contractAddress,
                                             value,
                                             (await nonceService.GetNextNonceAsync()).Value,
@@ -67,7 +67,7 @@ namespace NethereumUtils.Standard
                                             gasLimit,
                                             function.CreateTransactionInput(contractAddress).Data);
 
-            EthSendRawTransaction rawTransaction = new EthSendRawTransaction(NetworkUtils.GetWeb3().Client);
+            EthSendRawTransaction rawTransaction = new EthSendRawTransaction(NetworkProvider.GetWeb3().Client);
             await rawTransaction.SendRequestAsync(signedTxData);
         }
     }

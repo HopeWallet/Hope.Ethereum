@@ -1,10 +1,4 @@
 ﻿using Nethereum.HdWallet;
-using Nethereum.RPC.Eth;
-using Nethereum.RPC.Eth.Transactions;
-using Nethereum.RPC.NonceServices;
-using Nethereum.Signer;
-using System.Numerics;
-using System.Threading.Tasks;
 
 namespace NethereumUtils.Standard
 {
@@ -40,44 +34,5 @@ namespace NethereumUtils.Standard
         /// <param name="str"> The string which contains the words. </param>
         /// <returns> The array of individual words. </returns>
         public static string[] GetMnemonicWords(string str) => str.Trim().Split(' ', '\t', '\n');
-
-        public static async Task<decimal> GetEthBalance(string address)
-        {
-            EthGetBalance ethGetBalance = new EthGetBalance(NetworkUtils.GetWeb3().Client);
-            return SolidityUtils.ConvertFromUInt((await ethGetBalance.SendRequestAsync(address)).Value, 18);
-        }
-
-        public static async Task SendEth(string privateKey, string addressTo, decimal amount)
-        {
-            await SendEth(privateKey, addressTo, amount, await GasUtils.EstimateGasPrice(GasUtils.GasPriceTarget.Standard));
-        }
-
-        public static async Task SendEth(string privateKey, string addressTo, decimal amount, BigInteger gasPrice)
-        {
-            await SendEth(privateKey, addressTo, amount, gasPrice, await GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18)));
-        }
-
-        public static async Task SendEth(string privateKey, string addressTo, decimal amount, BigInteger gasPrice, BigInteger gasLimit)
-        {
-            BigInteger value = SolidityUtils.ConvertToUInt(amount, 18);
-
-            EthECKey ethECKey = new EthECKey(privateKey);
-
-            InMemoryNonceService nonceService = new InMemoryNonceService(ethECKey.GetPublicAddress(), NetworkUtils.GetWeb3().Client);
-
-            TransactionSigner signer = new TransactionSigner();
-            string signedTxData = signer.SignTransaction(
-                                            privateKey,
-                                            NetworkUtils.GetActiveNetwork(),
-                                            addressTo,
-                                            value,
-                                            (await nonceService.GetNextNonceAsync()).Value,
-                                            gasPrice,
-                                            gasLimit,
-                                            string.Empty);
-
-            EthSendRawTransaction rawTransaction = new EthSendRawTransaction(NetworkUtils.GetWeb3().Client);
-            await rawTransaction.SendRequestAsync(signedTxData);
-        }
     }
 }

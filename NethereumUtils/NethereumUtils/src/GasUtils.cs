@@ -23,7 +23,7 @@ namespace NethereumUtils.Standard
         public static async Task<BigInteger> EstimateEthGasLimit(string addressTo, BigInteger value)
         {
             CallInput callInput = new CallInput("", addressTo, new HexBigInteger(value));
-            EthEstimateGas estimateGasLimit = new EthEstimateGas(NetworkUtils.GetWeb3().Client);
+            EthEstimateGas estimateGasLimit = new EthEstimateGas(NetworkProvider.GetWeb3().Client);
             return await estimateGasLimit.SendRequestAsync(callInput);
         }
 
@@ -34,13 +34,13 @@ namespace NethereumUtils.Standard
         {
             function.SetDefaultFromAddressIfNotSet(callerAddress);
 
-            EthEstimateGas estimateGasLimit = new EthEstimateGas(NetworkUtils.GetWeb3().Client);
+            EthEstimateGas estimateGasLimit = new EthEstimateGas(NetworkProvider.GetWeb3().Client);
             return ((await estimateGasLimit.SendRequestAsync(function.CreateCallInput(contractAddress))).Value * 100) / 90;
         }
 
         public static async Task<BigInteger> EstimateGasPrice(GasPriceTarget gasPriceTarget)
         {
-            EthGasPrice estimateGasPrice = new EthGasPrice(NetworkUtils.GetWeb3().Client);
+            EthGasPrice estimateGasPrice = new EthGasPrice(NetworkProvider.GetWeb3().Client);
             return ModifyGasPrice(gasPriceTarget, (await estimateGasPrice.SendRequestAsync()).Value);
         }
 
