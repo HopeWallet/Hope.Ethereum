@@ -1,15 +1,13 @@
 ﻿using Nethereum.Contracts;
 using Nethereum.Contracts.Extensions;
-using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Util;
-using NethereumUtils.Standard.Network;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
 
-namespace NethereumUtils.Standard.Gas
+namespace NethereumUtils.Standard
 {
     /// <summary>
     /// Class used for anything related to ethereum transaction gas.
@@ -21,8 +19,6 @@ namespace NethereumUtils.Standard.Gas
         /// </summary>
         public enum GasPriceTarget { Slow, Standard, Fast };
 
-        private const int ETH_GAS_LIMIT = 21000;
-
         public static async Task<BigInteger> EstimateGasLimit<TFunc>(
             TFunc function,
             string contractAddress,
@@ -32,11 +28,6 @@ namespace NethereumUtils.Standard.Gas
 
             EthEstimateGas estimateGasLimit = new EthEstimateGas(NetworkUtils.GetWeb3().Client);
             return ((await estimateGasLimit.SendRequestAsync(function.CreateCallInput(contractAddress))).Value * 100) / 90;
-        }
-
-        public static void EstimateGasLimit(Action<BigInteger> onGasReceived)
-        {
-            onGasReceived(new BigInteger(ETH_GAS_LIMIT));
         }
 
         public static async Task<BigInteger> EstimateGasPrice(GasPriceTarget gasPriceTarget)

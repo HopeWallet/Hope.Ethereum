@@ -3,21 +3,39 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
-using Nethereum.Contracts.Extensions;
-using Nethereum.Hex.HexTypes;
 using NethereumUtils.Standard;
-using NethereumUtils.Standard.Contract;
-using NethereumUtils.Standard.Gas;
 
 namespace NethereumUtils.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class NethereumUtilsStandardTests
     {
+        [TestMethod]
+        public async Task SendTransactionAsync()
+        {
+            Transfer transfer = new Transfer
+            {
+                To = "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6",
+                Value = SolidityUtils.ConvertToUInt(1, 18)
+            };
+
+            decimal readableGasPrice = 5.24m;
+
+            BigInteger value = SolidityUtils.ConvertToUInt(0.0402000333, 18);
+            BigInteger gasLimit = 75000;
+            BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(readableGasPrice);
+            string privateKey = "0x215939f9664cc1a2ac9f004abea96586e81e57fc7c21a8204a1062bec915be8f";
+            string contractAddress = "0x5831819C84C05DdcD2568dE72963AC9f1e6831b6";
+
+            await ContractUtils.SendContractMessage(transfer, privateKey, contractAddress, gasPrice, gasLimit, value);
+        }
+
         [TestMethod]
         public async Task EstimateGasPrice()
         {
+            BigInteger gasPrice = await GasUtils.EstimateGasPrice(GasUtils.GasPriceTarget.Standard);
 
+            Assert.IsTrue(gasPrice > 0);
         }
 
         [TestMethod]

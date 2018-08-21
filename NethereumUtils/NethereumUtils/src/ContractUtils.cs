@@ -1,19 +1,15 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
-using Nethereum.Contracts.ContractHandlers;
 using Nethereum.Contracts.Extensions;
 using Nethereum.Contracts.QueryHandlers;
-using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.RPC.NonceServices;
 using Nethereum.Signer;
-using NethereumUtils.Standard.Gas;
-using NethereumUtils.Standard.Network;
 using System.Numerics;
 using System.Threading.Tasks;
-using static NethereumUtils.Standard.Gas.GasUtils;
+using static NethereumUtils.Standard.GasUtils;
 
-namespace NethereumUtils.Standard.Contract
+namespace NethereumUtils.Standard
 {
     /// <summary>
     /// Class which contains useful utility methods for sending messages to smart contracts or querying data from them.
@@ -38,22 +34,22 @@ namespace NethereumUtils.Standard.Contract
         public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, GasPriceTarget gasPriceTarget)
             where TFunc : FunctionMessage, new()
         {
-            await SendContractMessage(function, privateKey, contractAddress, SolidityUtils.ConvertFromUInt(await EstimateGasPrice(gasPriceTarget), 18));
+            await SendContractMessage(function, privateKey, contractAddress, await EstimateGasPrice(gasPriceTarget));
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, decimal gasPrice)
+        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice)
             where TFunc : FunctionMessage, new()
         {
-
+            await SendContractMessage(function, privateKey, contractAddress, gasPrice, await EstimateGasLimit(function, contractAddress, new EthECKey(privateKey).GetPublicAddress()));
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, decimal gasPrice, BigInteger gasLimit)
+        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit)
             where TFunc : FunctionMessage, new()
         {
-
+            await SendContractMessage(function, privateKey, contractAddress, gasPrice, gasLimit, 0);
         }
 
-        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, decimal gasPrice, BigInteger gasLimit, BigInteger value)
+        public static async Task SendContractMessage<TFunc>(TFunc function, string privateKey, string contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value)
             where TFunc : FunctionMessage, new()
         {
             EthECKey ethECKey = new EthECKey(privateKey);
@@ -66,27 +62,13 @@ namespace NethereumUtils.Standard.Contract
                                             NetworkUtils.GetActiveNetwork(),
                                             contractAddress,
                                             value,
-                                            nonceService.CurrentNonce,
-                                            GasUtils.GetFunctionalGasPrice(gasPrice),
+                                            (await nonceService.GetNextNonceAsync()).Value,
+                                            gasPrice,
                                             gasLimit,
                                             function.CreateTransactionInput(contractAddress).Data);
 
             EthSendRawTransaction rawTransaction = new EthSendRawTransaction(NetworkUtils.GetWeb3().Client);
             await rawTransaction.SendRequestAsync(signedTxData);
-            //rawTransaction.
-
-            //signer.SignTransaction()
-
-            //var contractHandler = NetworkUtils.GetWeb3().Eth.GetContractHandler(contractAddress);
-            //contractHandler.SignTransactionAsync(function);
-            //var transactionHandler = NetworkUtils.GetWeb3().Eth.GetContractTransactionHandler<TFunc>();
-            //transactionHandler.SignTransactionAsync()
-            //var transactionInput = function.CreateTransactionInput(contractAddress);
-
-            //signer.SignTransaction("0x", NetworkUtils.GetActiveNetwork(), )
-            //signer.SignTransaction
-            //NetworkUtils.GetWeb3().TransactionManager.
-
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Nethereum.Signer;
 using Nethereum.Web3;
 
-namespace NethereumUtils.Standard.Network
+namespace NethereumUtils.Standard
 {
     public static class NetworkUtils
     {
