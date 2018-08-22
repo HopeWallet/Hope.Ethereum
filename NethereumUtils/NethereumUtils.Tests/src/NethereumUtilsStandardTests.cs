@@ -23,7 +23,7 @@ namespace NethereumUtils.Tests
         public async Task GetEthBalance()
         {
             string address = "0xb332Feee826BF44a431Ea3d65819e31578f30446";
-            decimal balance = await EthUtils.GetEthBalance(address);
+            decimal balance = await EthUtils.GetEtherBalance(address);
 
             Assert.IsTrue(balance > 0);
         }
@@ -38,7 +38,7 @@ namespace NethereumUtils.Tests
         //    BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(readableGasPrice);
         //    string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
 
-        //    await EthUtils.SendEth(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount, gasPrice);
+        //    await EthUtils.SendEther(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount, gasPrice);
         //        //.OnTransactionSuccessful(() => GetEthBalance())
         //        //.OnTransactionFailure(() => GetEthSendGasLimit());
         //}
