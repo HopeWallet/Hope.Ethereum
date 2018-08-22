@@ -40,6 +40,9 @@
     <Reference Include="Nethereum.Contracts">
       <HintPath>..\packages\Nethereum Unity\Nethereum.Contracts.dll</HintPath>
     </Reference>
+    <Reference Include="Nethereum.HdWallet">
+      <HintPath>..\packages\Nethereum Standard\Nethereum.HdWallet.dll</HintPath>
+    </Reference>
     <Reference Include="Nethereum.Hex">
       <HintPath>..\packages\Nethereum Unity\Nethereum.Hex.dll</HintPath>
     </Reference>
@@ -69,7 +72,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Threading">
       <HintPath>..\packages\Nethereum Unity\System.Threading.dll</HintPath>
     </Reference>
@@ -85,7 +87,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\CoroutineHandler.cs" />
+    <Compile Include="src\AddressUtils.cs" />
+    <Compile Include="src\ContractUtils.cs" />
+    <Compile Include="src\Coroutines\CoroutineExtensions.cs" />
+    <Compile Include="src\Coroutines\CoroutineServiceProvider.cs" />
+    <Compile Include="src\EthUtils.cs" />
+    <Compile Include="src\GasUtils.cs" />
+    <Compile Include="src\NetworkProvider.cs" />
+    <Compile Include="src\Promises\EthCallPromise.cs" />
+    <Compile Include="src\Promises\EthTransactionPromise.cs" />
+    <Compile Include="src\Promises\Promise.cs" />
+    <Compile Include="src\SolidityUtils.cs" />
+    <Compile Include="src\TransactionUtils.cs" />
+    <Compile Include="src\WalletUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
