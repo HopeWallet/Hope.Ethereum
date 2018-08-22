@@ -10,15 +10,15 @@ Since the NethereumUtils library is split up into two core libraries, the instal
 
 ### Standard Library
 
-The required dlls for the Standard Library to function are located in the [Nethereum releases](https://github.com/Nethereum/Nethereum/releases). Download either the latest .NET 4.6.1 Nethereum library, or the version used for this library found [here](https://github.com/Nethereum/Nethereum/releases/download/3.0.0-rc1/net461dlls.zip).
+The required dlls for the Standard Library to function are located in the [NethereumUtils releases](https://github.com/ThatSlyGuy/NethereumUtils/releases). Download the latest NethereumUtils zip file, and add all required dlls to your project reference.
 
-Add the dlls to your project reference and you should be good to go.
+If you already have Nethereum in your project, simply add only the NethereumUtils dll.
 
 ### Unity Library
 
-The required dlls for the Unity Library to function are located in the [Nethereum releases](https://github.com/Nethereum/Nethereum/releases). Download either the latest Unity .NET 3.5 Nethereum library, or the version used for this library found [here](https://github.com/Nethereum/Nethereum/releases/download/3.0.0-rc1/unitynet35dlls.zip).
+The required dlls for the Unity Library to function are located in the [NethereumUtils releases](https://github.com/ThatSlyGuy/NethereumUtils/releases). Download the latest NethereumUtils.Unity zip file, and add all required dlls to your Unity project's plugins folder.
 
-Add the dlls to your Unity project in your Plugins folder and the library should be usable.
+If you already have Nethereum in your project, only add the NethereumUtils.Unity dll to the plugins folder.
 
 ## Usage
 
