@@ -40,8 +40,9 @@
     <Reference Include="Nethereum.Contracts">
       <HintPath>..\packages\Nethereum Unity\Nethereum.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Nethereum.HdWallet">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.HdWallet.dll</HintPath>
+    <Reference Include="Nethereum.HdWallet, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Nethereum Unity\Nethereum.HdWallet.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Hex">
       <HintPath>..\packages\Nethereum Unity\Nethereum.Hex.dll</HintPath>

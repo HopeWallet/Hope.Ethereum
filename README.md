@@ -82,4 +82,4 @@ This line will run whether an error occurs or not. You can think of it as like a
 
 ## Final Words
 
-This is a library of utility classes that I created to use with my own Ethereum wallet: Hope Wallet. This library won't likely get updated too much unless there are glaring issues anywhere I haven't noticed yet. Feel free to create some issues if you run into any problems and I will see what I can do!
+This is a library of utility classes that were created for use in the Hope Ethereum wallet. This library won't likely get updated very much unless there are any glaring issues anywhere that haven't been discovered. If you encounter any problems, post an issue and support will gladly be provided!
