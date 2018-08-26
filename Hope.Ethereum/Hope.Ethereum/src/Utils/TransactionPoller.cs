@@ -3,7 +3,7 @@ using Nethereum.RPC.Eth.Transactions;
 using System;
 using System.Timers;
 
-namespace NethereumUtils.Standard
+namespace Hope.Ethereum.Utils
 {
     /// <summary>
     /// Class used to poll for a transaction receipt to see if it was successful/unsuccessful.

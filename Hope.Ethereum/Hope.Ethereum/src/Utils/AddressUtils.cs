@@ -1,4 +1,4 @@
-﻿namespace NethereumUtils.Standard
+﻿namespace Hope.Ethereum.Utils
 {
     /// <summary>
     /// Class which has some utility methods needed for ethereum contracts.

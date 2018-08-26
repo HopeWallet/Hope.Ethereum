@@ -1,7 +1,7 @@
 ﻿using Nethereum.Signer;
 using Nethereum.Web3;
 
-namespace NethereumUtils.Standard
+namespace Hope.Ethereum.Utils
 {
     /// <summary>
     /// Class used for providing the network data to other ethereum utility classes.

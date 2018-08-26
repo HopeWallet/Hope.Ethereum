@@ -5,7 +5,7 @@ using Nethereum.Signer;
 using System.Numerics;
 using System.Threading.Tasks;
 
-namespace NethereumUtils.Standard
+namespace Hope.Ethereum.Utils
 {
     /// <summary>
     /// Utility class used for sending ether and retrieving the ether balance of certain addresses.

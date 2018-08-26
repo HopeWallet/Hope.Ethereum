@@ -8,7 +8,7 @@ using Nethereum.Util;
 using System.Numerics;
 using System.Threading.Tasks;
 
-namespace NethereumUtils.Standard
+namespace Hope.Ethereum.Utils
 {
     /// <summary>
     /// Class used for anything related to ethereum transaction gas.

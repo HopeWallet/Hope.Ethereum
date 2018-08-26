@@ -7,9 +7,9 @@ using Nethereum.RPC.NonceServices;
 using Nethereum.Signer;
 using System.Numerics;
 using System.Threading.Tasks;
-using static NethereumUtils.Standard.GasUtils;
+using static Hope.Ethereum.Utils.GasUtils;
 
-namespace NethereumUtils.Standard
+namespace Hope.Ethereum.Utils
 {
     /// <summary>
     /// Class which contains useful utility methods for sending messages to smart contracts or querying data from them.
