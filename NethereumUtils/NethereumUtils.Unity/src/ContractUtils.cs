@@ -3,6 +3,7 @@ using Nethereum.Contracts;
 using Nethereum.Contracts.Extensions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.UnityClient;
+using Nethereum.Signer;
 using NethereumUtils.Unity.Coroutines;
 using NethereumUtils.Unity.Promises;
 using System.Collections;
@@ -20,7 +21,7 @@ namespace NethereumUtils.Unity
         /// <typeparam name="TFunc"> The <see cref="FunctionMessage"/> to execute on the blockchain given the contract address. </typeparam>
         /// <param name="function"> The function to execute. </param>
         /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
-        /// <param name="callerAddress"> The address of the function caller. </param>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="signedUnityRequest"> The <see cref="TransactionSignedUnityRequest"/> to use to send the message. </param>
         /// <param name="gasPrice"> The <see cref="HexBigInteger"/> gas price to use with the transaction. </param>
         /// <param name="gasLimit"> The <see cref="HexBigInteger"/> gas limit to use with the transaction. </param>
@@ -28,13 +29,12 @@ namespace NethereumUtils.Unity
         public static EthTransactionPromise SendContractMessage<TFunc>(
             TFunc function,
             string contractAddress,
-            string callerAddress,
-            TransactionSignedUnityRequest signedUnityRequest,
+            string privateKey,
             HexBigInteger gasPrice,
             HexBigInteger gasLimit) where TFunc : FunctionMessage
         {
             var promise = new EthTransactionPromise();
-            _SendContractMessageCoroutine(function, promise, contractAddress, callerAddress, signedUnityRequest, gasPrice, gasLimit).StartCoroutine();
+            _SendContractMessageCoroutine(function, promise, contractAddress, privateKey, gasPrice, gasLimit).StartCoroutine();
 
             return promise;
         }
@@ -46,7 +46,7 @@ namespace NethereumUtils.Unity
         /// <param name="function"> The function to execute. </param>
         /// <param name="promise"> Promise of the transaction result of sending the contract message. </param>
         /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
-        /// <param name="callerAddress"> The address of the function caller. </param>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="signedUnityRequest"> The <see cref="TransactionSignedUnityRequest"/> to use to send the message. </param>
         /// <param name="gasPrice"> The <see cref="HexBigInteger"/> gas price to use with the transaction. </param>
         /// <param name="gasLimit"> The <see cref="HexBigInteger"/> gas limit to use with the transaction. </param>
@@ -54,18 +54,20 @@ namespace NethereumUtils.Unity
             TFunc function,
             EthTransactionPromise promise,
             string contractAddress,
-            string callerAddress,
-            TransactionSignedUnityRequest signedUnityRequest,
+            string privateKey,
             HexBigInteger gasPrice,
             HexBigInteger gasLimit) where TFunc : FunctionMessage
         {
-            function.SetDefaultFromAddressIfNotSet(callerAddress);
+            function.SetDefaultFromAddressIfNotSet(privateKey);
             function.Gas = gasLimit;
             function.GasPrice = gasPrice;
 
-            yield return signedUnityRequest.SignAndSendTransaction(function.CreateTransactionInput(contractAddress));
+            EthECKey ethKey = new EthECKey(privateKey);
+            TransactionSignedUnityRequest unityRequest = new TransactionSignedUnityRequest(NetworkProvider.GetNetworkChainUrl(), privateKey, ethKey.GetPublicAddress());
 
-            promise.Build(signedUnityRequest, () => signedUnityRequest.Result, NetworkProvider.GetNetworkChainUrl);
+            yield return unityRequest.SignAndSendTransaction(function.CreateTransactionInput(contractAddress));
+
+            promise.Build(unityRequest, () => unityRequest.Result, NetworkProvider.GetNetworkChainUrl);
         }
 
         /// <summary>

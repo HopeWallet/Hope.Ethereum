@@ -1,6 +1,7 @@
 ﻿using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.UnityClient;
 using Nethereum.RPC.Eth.DTOs;
+using Nethereum.Signer;
 using NethereumUtils.Unity.Coroutines;
 using NethereumUtils.Unity.Promises;
 using System.Collections;
@@ -43,23 +44,22 @@ namespace NethereumUtils.Unity
         /// <summary>
         /// Sends ether from this wallet to a given address.
         /// </summary>
-        /// <param name="signedUnityRequest"> The signed request to send the ether with. </param>
         /// <param name="walletAddress"> The address of the wallet sending the ether. </param>
         /// <param name="gasLimit"> The gas limit of the ether send transaction. </param>
         /// <param name="gasPrice"> The gas price of the ether send transaction. </param>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="addressTo"> The address to send the ether to. </param>
         /// <param name="amount"> The amount of ether to send. </param>
         /// <returns> The promise which will contain the result of a successful/unsuccessful transaction. </returns>
         public static EthTransactionPromise SendEther(
-            TransactionSignedUnityRequest signedUnityRequest,
             HexBigInteger gasLimit,
             HexBigInteger gasPrice,
-            string walletAddress,
+            string privateKey,
             string addressTo,
             decimal amount)
         {
             var promise = new EthTransactionPromise();
-            _SendEtherCoroutine(promise, signedUnityRequest, gasLimit, gasPrice, walletAddress, addressTo, amount).StartCoroutine();
+            _SendEtherCoroutine(promise, gasLimit, gasPrice, privateKey, addressTo, amount).StartCoroutine();
 
             return promise;
         }
@@ -68,26 +68,27 @@ namespace NethereumUtils.Unity
         /// Sends ether from one address to another.
         /// </summary>
         /// <param name="promise"> Promise of the transaction result of sending ether. </param>
-        /// <param name="signedUnityRequest"> The signed request to send the ether with. </param>
         /// <param name="walletAddress"> The address of the wallet sending the ether. </param>
         /// <param name="gasLimit"> The gas limit of the ether send transaction. </param>
         /// <param name="gasPrice"> The gas price of the ether send transaction. </param>
-        /// <param name="addressTo"> The address to send the ether to. </param>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
+        /// <param name="addressTo"> The address the ether is being sent to. </param>
         /// <param name="amount"> The amount to send in ether. </param>
         /// <returns> The time waited for the request to be broadcast to the network. </returns>
         private static IEnumerator _SendEtherCoroutine(
             EthTransactionPromise promise,
-            TransactionSignedUnityRequest signedUnityRequest,
             HexBigInteger gasLimit,
             HexBigInteger gasPrice,
-            string walletAddress,
+            string privateKey,
             string addressTo,
             dynamic amount)
         {
-            var transactionInput = new TransactionInput("", addressTo, walletAddress, gasLimit, gasPrice, new HexBigInteger(SolidityUtils.ConvertToUInt(amount, 18)));
-            yield return signedUnityRequest.SignAndSendTransaction(transactionInput);
+            EthECKey ethKey = new EthECKey(privateKey);
+            TransactionSignedUnityRequest unityRequest = new TransactionSignedUnityRequest(NetworkProvider.GetNetworkChainUrl(), privateKey, ethKey.GetPublicAddress());
+            TransactionInput transactionInput = new TransactionInput("", addressTo, ethKey.GetPublicAddress(), gasLimit, gasPrice, new HexBigInteger(SolidityUtils.ConvertToUInt(amount, 18)));
+            yield return unityRequest.SignAndSendTransaction(transactionInput);
 
-            promise.Build(signedUnityRequest, () => signedUnityRequest.Result, () => NetworkProvider.GetNetworkChainUrl());
+            promise.Build(unityRequest, () => unityRequest.Result, () => NetworkProvider.GetNetworkChainUrl());
         }
     }
 }
