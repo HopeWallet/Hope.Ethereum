@@ -7,8 +7,8 @@
     <ProjectGuid>{19A3F5C4-1DD2-499C-BBF4-B15027A83EA4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NethereumUtils</RootNamespace>
-    <AssemblyName>NethereumUtils</AssemblyName>
+    <RootNamespace>Hope.Ethereum</RootNamespace>
+    <AssemblyName>Hope.Ethereum</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -163,14 +163,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\AddressUtils.cs" />
-    <Compile Include="src\ContractUtils.cs" />
-    <Compile Include="src\EthUtils.cs" />
-    <Compile Include="src\GasUtils.cs" />
-    <Compile Include="src\NetworkProvider.cs" />
-    <Compile Include="src\SolidityUtils.cs" />
-    <Compile Include="src\TransactionPoller.cs" />
-    <Compile Include="src\WalletUtils.cs" />
+    <Compile Include="src\Contracts\Abstract\EthereumContract.cs" />
+    <Compile Include="src\Utils\AddressUtils.cs" />
+    <Compile Include="src\Utils\ContractUtils.cs" />
+    <Compile Include="src\Utils\EthUtils.cs" />
+    <Compile Include="src\Utils\GasUtils.cs" />
+    <Compile Include="src\Utils\NetworkProvider.cs" />
+    <Compile Include="src\Utils\SolidityUtils.cs" />
+    <Compile Include="src\Utils\TransactionPoller.cs" />
+    <Compile Include="src\Utils\WalletUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
