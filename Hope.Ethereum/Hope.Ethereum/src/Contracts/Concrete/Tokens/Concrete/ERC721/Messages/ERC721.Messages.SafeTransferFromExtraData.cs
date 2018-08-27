@@ -18,7 +18,7 @@ namespace Hope.Ethereum.Tokens
             /// Class which contains the data needed to execute the ERC721 safeTransferFrom function.
             /// </summary>
             [Function("safeTransferFrom")]
-            public sealed class SafeTransferFrom : FunctionMessage
+            public sealed class SafeTransferFromExtraData : FunctionMessage
             {
                 /// <summary>
                 /// The address transferring the ERC721 token.
@@ -37,6 +37,12 @@ namespace Hope.Ethereum.Tokens
                 /// </summary>
                 [Parameter("uint256", "_tokenId", 3)]
                 public BigInteger TokenId { get; set; }
+
+                /// <summary>
+                /// The extra byte data to send with the transfer.
+                /// </summary>
+                [Parameter("bytes", "_data", 4)]
+                public byte[] Data { get; set; }
             }
         }
     }

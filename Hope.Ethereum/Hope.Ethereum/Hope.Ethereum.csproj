@@ -177,6 +177,10 @@
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Queries\ERC20.Queries.Name.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Queries\ERC20.Queries.Symbol.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Queries\ERC20.Queries.TotalSupply.cs" />
+    <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC721\ERC721.cs" />
+    <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC721\Messages\ERC721.Messages.SafeTransferFrom.cs" />
+    <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC721\Queries\ERC721.Queries.Name.cs" />
+    <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC721\Queries\ERC721.Queries.Symbol.cs" />
     <Compile Include="src\Simple Contract Output\Address\SimpleOutputs.Address.cs" />
     <Compile Include="src\Simple Contract Output\Bool\SimpleOutputs.Bool.cs" />
     <Compile Include="src\Simple Contract Output\SimpleContractQueries.cs" />
@@ -197,8 +201,6 @@
     <Compile Include="src\Utils\TransactionPoller.cs" />
     <Compile Include="src\Utils\WalletUtils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Contracts\Concrete\Tokens\Concrete\ERC721\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

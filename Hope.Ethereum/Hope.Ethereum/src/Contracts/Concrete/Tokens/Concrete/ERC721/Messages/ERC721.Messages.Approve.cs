@@ -15,25 +15,19 @@ namespace Hope.Ethereum.Tokens
         public static partial class Messages
         {
             /// <summary>
-            /// Class which contains the data needed to execute the ERC721 safeTransferFrom function.
+            /// Class which contains the data needed to execute the ERC721 approve function.
             /// </summary>
-            [Function("safeTransferFrom")]
-            public sealed class SafeTransferFrom : FunctionMessage
+            [Function("approve")]
+            public sealed class Approve : FunctionMessage
             {
                 /// <summary>
-                /// The address transferring the ERC721 token.
+                /// The address to give approval to.
                 /// </summary>
-                [Parameter("address", "_from", 1)]
-                public string From { get; set; }
-
-                /// <summary>
-                /// The address to transfer the ERC721 token to.
-                /// </summary>
-                [Parameter("address", "_to", 2)]
+                [Parameter("address", "_to", 1)]
                 public string To { get; set; }
 
                 /// <summary>
-                /// The id of the ERC721 token to send.
+                /// The id of the ERC721 token to approve.
                 /// </summary>
                 [Parameter("uint256", "_tokenId", 3)]
                 public BigInteger TokenId { get; set; }
