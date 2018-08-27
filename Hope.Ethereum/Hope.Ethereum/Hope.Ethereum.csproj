@@ -36,88 +36,88 @@
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.2.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\BouncyCastle.Crypto.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging.Core">
-      <HintPath>..\packages\Nethereum Standard\Common.Logging.Core.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NBitcoin">
-      <HintPath>..\packages\Nethereum Standard\NBitcoin.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\NBitcoin.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.ABI, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.ABI.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.ABI.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Accounts">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Accounts.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Accounts.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Contracts, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Contracts.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Geth">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Geth.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Geth.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.HdWallet">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.HdWallet.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.HdWallet.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Hex, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Hex.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Hex.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.Client, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.JsonRpc.Client.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.JsonRpc.Client.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.IpcClient">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.JsonRpc.IpcClient.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.JsonRpc.IpcClient.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.RpcClient">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.JsonRpc.RpcClient.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.JsonRpc.RpcClient.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.WebSocketClient">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.JsonRpc.WebSocketClient.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.JsonRpc.WebSocketClient.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.KeyStore, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.KeyStore.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.KeyStore.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Parity">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Parity.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Parity.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Quorum">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Quorum.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Quorum.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.RLP, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.RLP.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.RLP.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.RPC, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.RPC.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.RPC.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Signer, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Signer.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Signer.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.StandardTokenEIP20">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.StandardTokenEIP20.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.StandardTokenEIP20.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Unity, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Unity.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Util, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Util.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Util.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Web3">
-      <HintPath>..\packages\Nethereum Standard\Nethereum.Web3.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Nethereum.Web3.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nethereum Standard\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Hope.Ethereum Packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Hope.Ethereum;
 using Hope.Ethereum.Tokens;
+using Hope.Ethereum.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
-using NethereumUtils.Standard;
 
 namespace Hope.EthereumTests
 {
