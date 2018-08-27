@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Hope.Ethereum
+namespace Hope.Ethereum.Tokens
 {
     /// <summary>
     /// Base class for dynamic ethereum tokens.

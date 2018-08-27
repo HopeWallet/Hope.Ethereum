@@ -11,8 +11,8 @@ namespace Hope.Ethereum.Utils
         private const string MAINNET_URL = "https://mainnet.infura.io";
         private const string RINKEBY_URL = "https://rinkeby.infura.io";
 
-        private static Chain ActiveNetwork = Chain.Rinkeby;
-        private static Web3 Web3 = new Web3(RINKEBY_URL);
+        private static Chain ActiveNetwork = Chain.MainNet;
+        private static Web3 Web3 = new Web3(GetNetworkChainUrl());
 
         /// <summary>
         /// Switches the current network chain.

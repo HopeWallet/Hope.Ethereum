@@ -1,4 +1,6 @@
 ﻿using Hope.Ethereum.Utils;
+using Nethereum.Signer;
+using System;
 
 namespace Hope.Ethereum
 {
@@ -7,7 +9,26 @@ namespace Hope.Ethereum
         private readonly string mainnetAddress;
         private readonly string rinkebyAddress;
 
-        public string ContractAddress => string.IsNullOrEmpty(rinkebyAddress) || NetworkProvider.GetActiveNetworkChain() == Nethereum.Signer.Chain.MainNet ? mainnetAddress : rinkebyAddress;
+        public string ContractAddress
+        {
+            get
+            {
+                if (NetworkProvider.GetActiveNetworkChain() == Chain.MainNet)
+                {
+                    if (string.IsNullOrEmpty(mainnetAddress))
+                        throw new ArgumentNullException("No mainnet address to use.");
+                    else
+                        return mainnetAddress;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(rinkebyAddress))
+                        throw new ArgumentNullException("No rinkeby address to use.");
+                    else
+                        return rinkebyAddress;
+                }
+            }
+        }
 
         protected EthereumContract(string mainnetAddress)
         {
