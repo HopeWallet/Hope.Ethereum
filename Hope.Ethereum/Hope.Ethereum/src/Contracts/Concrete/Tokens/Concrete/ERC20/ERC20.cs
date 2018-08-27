@@ -9,6 +9,14 @@ namespace Hope.Ethereum.Tokens
     /// </summary>
     public sealed partial class ERC20 : Token
     {
+        public ERC20(string mainnetAddress, string rinkebyAddress) : base(mainnetAddress, rinkebyAddress)
+        {
+        }
+
+        public ERC20(string mainnetAddress) : base(mainnetAddress)
+        {
+        }
+
         /// <summary>
         /// Initializes the ERC20 token with all required values.
         /// </summary>
@@ -20,15 +28,7 @@ namespace Hope.Ethereum.Tokens
         {
         }
 
-        public ERC20(string mainnetAddress) : base(mainnetAddress)
-        {
-        }
-
         public ERC20(string mainnetAddress, string rinkebyAddress, string name, string symbol, int decimals) : base(mainnetAddress, rinkebyAddress, name, symbol, decimals)
-        {
-        }
-
-        public ERC20(string mainnetAddress, string rinkebyAddress) : base(mainnetAddress, rinkebyAddress)
         {
         }
 
