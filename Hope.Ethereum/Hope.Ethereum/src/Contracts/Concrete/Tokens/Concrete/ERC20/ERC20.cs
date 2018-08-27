@@ -71,6 +71,45 @@ namespace Hope.Ethereum.Tokens
             return SolidityUtils.ConvertFromUInt(supply.Value, Decimals.Value);
         }
 
+        public async Task<decimal> QueryAllowance(string owner, string spender)
+        {
+            var allowance = await SimpleContractQueries.QueryUInt256Output(new Queries.Allowance { Owner = owner, Spender = spender }, ContractAddress, null);
+            return SolidityUtils.ConvertFromUInt(allowance.Value, Decimals.Value);
+        }
+
+        public Task<TransactionPoller> Approve(string privateKey, string spender, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
+        {
+            Messages.Approve approve = new Messages.Approve
+            {
+                Spender = spender,
+                Value = SolidityUtils.ConvertToUInt(amount, Decimals.Value)
+            };
+
+            return ContractUtils.SendContractMessage(approve, privateKey, ContractAddress, gasPrice, gasLimit);
+        }
+
+        public Task<TransactionPoller> IncreaseApproval(string privateKey, string spender, decimal addedAmount, BigInteger gasLimit, BigInteger gasPrice)
+        {
+            Messages.IncreaseApproval increaseApproval = new Messages.IncreaseApproval
+            {
+                Spender = spender,
+                AddedValue = SolidityUtils.ConvertToUInt(addedAmount, Decimals.Value)
+            };
+
+            return ContractUtils.SendContractMessage(increaseApproval, privateKey, ContractAddress, gasPrice, gasLimit);
+        }
+
+        public Task<TransactionPoller> DecreaseApproval(string privateKey, string spender, decimal subtractedAmount, BigInteger gasLimit, BigInteger gasPrice)
+        {
+            Messages.DecreaseApproval decreaseApproval = new Messages.DecreaseApproval
+            {
+                Spender = spender,
+                SubtractedValue = SolidityUtils.ConvertToUInt(subtractedAmount, Decimals.Value)
+            };
+
+            return ContractUtils.SendContractMessage(decreaseApproval, privateKey, ContractAddress, gasPrice, gasLimit);
+        }
+
         /// <summary>
         /// Transfers a certain number of tokens of this contract from a wallet to another address.
         /// </summary>
@@ -80,7 +119,7 @@ namespace Hope.Ethereum.Tokens
         /// <param name="addressTo"> The address the tokens are being sent to. </param>
         /// <param name="address"> The address to transfer the tokens to. </param>
         /// <param name="amount"> The amount of tokens to transfer. </param>
-        public Task<TransactionPoller> Transfer(BigInteger gasLimit, BigInteger gasPrice, string privateKey, string addressTo, decimal amount)
+        public Task<TransactionPoller> Transfer(string privateKey, string addressTo, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.Transfer transfer = new Messages.Transfer
             {
@@ -91,7 +130,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(transfer, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> TransferFrom(BigInteger gasLimit, BigInteger gasPrice, string privateKey, string addressFrom, string addressTo, decimal amount)
+        public Task<TransactionPoller> TransferFrom(string privateKey, string addressFrom, string addressTo, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.TransferFrom transferFrom = new Messages.TransferFrom
             {

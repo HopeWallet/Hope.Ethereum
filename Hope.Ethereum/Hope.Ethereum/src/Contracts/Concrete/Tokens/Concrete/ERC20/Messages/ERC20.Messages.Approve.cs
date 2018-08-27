@@ -27,7 +27,7 @@ namespace Hope.Ethereum.Tokens
                 public string Spender { get; set; }
 
                 /// <summary>
-                /// The amount of the ERC20 token to send to the destination address.
+                /// The amount of the ERC20 token to give approval to the address.
                 /// </summary>
                 [Parameter("uint256", "_value", 2)]
                 public BigInteger Value { get; set; }
