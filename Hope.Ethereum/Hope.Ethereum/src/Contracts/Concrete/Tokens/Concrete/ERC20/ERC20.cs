@@ -1,5 +1,5 @@
 ﻿using Hope.Ethereum.Utils;
-using Nethereum.Hex.HexTypes;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace Hope.Ethereum.Tokens
@@ -80,7 +80,7 @@ namespace Hope.Ethereum.Tokens
         /// <param name="addressTo"> The address the tokens are being sent to. </param>
         /// <param name="address"> The address to transfer the tokens to. </param>
         /// <param name="amount"> The amount of tokens to transfer. </param>
-        public Task<TransactionPoller> Transfer(HexBigInteger gasLimit, HexBigInteger gasPrice, string privateKey, string addressTo, decimal amount)
+        public Task<TransactionPoller> Transfer(BigInteger gasLimit, BigInteger gasPrice, string privateKey, string addressTo, decimal amount)
         {
             Messages.Transfer transfer = new Messages.Transfer
             {
@@ -88,7 +88,19 @@ namespace Hope.Ethereum.Tokens
                 To = addressTo
             };
 
-            return ContractUtils.SendContractMessage(transfer, privateKey, ContractAddress, gasPrice.Value, gasLimit.Value);
+            return ContractUtils.SendContractMessage(transfer, privateKey, ContractAddress, gasPrice, gasLimit);
+        }
+
+        public Task<TransactionPoller> TransferFrom(BigInteger gasLimit, BigInteger gasPrice, string privateKey, string addressFrom, string addressTo, decimal amount)
+        {
+            Messages.TransferFrom transferFrom = new Messages.TransferFrom
+            {
+                AmountToSend = SolidityUtils.ConvertToUInt(amount, Decimals.Value),
+                From = addressFrom,
+                To = addressTo
+            };
+
+            return ContractUtils.SendContractMessage(transferFrom, privateKey, ContractAddress, gasPrice, gasLimit);
         }
     }
 }
