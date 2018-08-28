@@ -19,5 +19,18 @@ namespace Hope.EthereumTests
 
             Assert.IsTrue(balance > 0);
         }
+
+        [TestMethod]
+        public async Task TestGetERC721Data()
+        {
+            // NOTE:
+            // Since CryptoKitties was the first draft of ERC721, many functions were not formalized and decided upon.
+            // Therefore, some functions will not work and some others will.
+            ERC721 cryptokitties = new ERC721("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "CryptoKitties", "CK", 0);
+
+            var balance = await cryptokitties.QueryBalanceOf("0x12b353D1a2842D2272aB5A18C6814D69f4296873");
+
+            Assert.IsTrue(balance > 0);
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace Hope.EthereumTests
         [TestMethod]
         public async Task GetEthBalance()
         {
-            string address = "0xb332Feee826BF44a431Ea3d65819e31578f30446";
+            string address = "0x0000000000000000000000000000000000000000";
             decimal balance = await EthUtils.GetEtherBalance(address);
 
             Assert.IsTrue(balance > 0);
@@ -93,8 +93,8 @@ namespace Hope.EthereumTests
         public async Task QueryTest()
         {
             SimpleOutputs.UInt256 output = await ContractUtils.QueryContract<ERC20.Queries.BalanceOf, SimpleOutputs.UInt256>(
-                                        new ERC20.Queries.BalanceOf { Owner = "0xb332Feee826BF44a431Ea3d65819e31578f30446" },
-                                        "0x5831819C84C05DdcD2568dE72963AC9f1e6831b6",
+                                        new ERC20.Queries.BalanceOf { Owner = "0x0000000000000000000000000000000000000000" },
+                                        "0x6810e776880C02933D47DB1b9fc05908e5386b96",
                                         null).ConfigureAwait(false);
 
             decimal result = SolidityUtils.ConvertFromUInt(output.Value, 18);
