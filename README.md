@@ -1,32 +1,85 @@
-# NethereumUtils
+# Hope.Ethereum
 
-Library of utility classes useful for interacting with the Ethereum blockchain through Nethereum. 
+Library of classes used for interacting with the Ethereum blockchain through the Nethereum code library. Contains simple classes and utility methods for interacting with ERC20 and ERC721 tokens, sending Ether, and several other Ethereum related bits and pieces.
 
 Includes .NET Standard and Unity game engine variants.
 
 ## Installation
 
-Since the NethereumUtils library is split up into two core libraries, the installation is slightly different for the two.
+Since the Hope.Ethereum library is split up into two core libraries, the installation is slightly different for the two.
 
 ### Standard Library
 
-The required dlls for the Standard Library to function are located in the [NethereumUtils releases](https://github.com/ThatSlyGuy/NethereumUtils/releases). Download the latest NethereumUtils zip file, and add all required dlls to your project reference.
+The required dlls for the Standard Library to function are located in the [Hope.Ethereum releases](https://github.com/HopeWallet/Hope.Ethereum/releases). Download the latest Hope.Ethereum zip file, and add all required dlls to your project reference.
 
-If you already have Nethereum in your project, simply add only the NethereumUtils dll.
+If you already have Nethereum in your project, simply add only the Hope.Ethereum dll.
 
 ### Unity Library
 
-The required dlls for the Unity Library to function are located in the [NethereumUtils releases](https://github.com/ThatSlyGuy/NethereumUtils/releases). Download the latest NethereumUtils.Unity zip file, and add all required dlls to your Unity project's plugins folder.
+The required dlls for the Unity Library to function are located in the [Hope.Ethereum.Unity releases](https://github.com/HopeWallet/Hope.Ethereum.Unity/releases). Download the latest Hope.Ethereum.Unity zip file, and add all required dlls to your Unity project's plugins folder.
 
-If you already have Nethereum in your project, only add the NethereumUtils.Unity dll to the plugins folder.
+If you already have Nethereum in your project, only add the Hope.Ethereum.Unity dll to the plugins folder.
 
 ## Usage
 
-The usage for the NethereumUtils library is split up into different sections. [NethereumUtils](https://github.com/ThatSlyGuy/NethereumUtils/tree/master/NethereumUtils/NethereumUtils) contains the .NET Standard working library, while [NethereumUtils.Unity](https://github.com/ThatSlyGuy/NethereumUtils/tree/master/NethereumUtils/NethereumUtils.Unity) contains the Unity game engine working library.
+The usage for the Hope.Ethereum library is split up into different sections. [Hope.Ethereum](https://github.com/HopeWallet/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum) contains the .NET Standard working library, while [Hope.Ethereum.Unity](https://github.com/HopeWallet/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum.Unity) contains the Unity game engine working library.
 
 ### Standard Library
 
-This is pretty straight forward. See the [NethereumUtils.Tests](https://github.com/ThatSlyGuy/NethereumUtils/tree/master/NethereumUtils/NethereumUtils.Tests) code for examples.
+#### Ether
+
+The Hope.Ethereum library contains methods to easily send Ether and view the Ether balance of an address.
+
+##### Sending Ether
+
+You can easily send Ether from one address to another using the Hope.Ethereum library. The code for doing this is as follows:
+
+```c#
+decimal readableEthAmount = 0.0000000000001m;
+decimal readableGasPrice = 5.24m;
+
+BigInteger gasLimit = 75000;
+BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(readableGasPrice);
+string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
+
+await EthUtils.SendEther(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount, gasPrice)
+              .OnTransactionSuccessful(() => Console.WriteLine("Transaction successful!"))
+              .OnTransactionFailure(() => Console.WriteLine("Transaction failed!"));
+```
+
+Oftentimes we may find it easier to use a decimal readable gas price in gwei like ``` decimal readableGasPrice = 5.24m ```. Hope.Ethereum makes it very easy to use this, and then convert it to a gas price usable by the ``` SendEther ``` method. 
+
+The ``` SendEther ``` method takes in the Ether amount in Ether, NOT wei. However, if you already have the amount of Ether you want to send in wei, you can convert it to the Ether amount, and then send that. 
+
+See below for an example of the following.
+
+```c#
+BigInteger etherAmountInWei = 100000000000000000000;
+decimal etherAmount = SolidityUtils.ConvertFromUInt(etherAmountInWei, 18);
+
+// Send ether...
+```
+
+The ``` SendEther ``` method has optional overloads which allow for no gas price or gas limit to be input into the method. If this is used, the gas price and gas limit will be estimated accordingly and then sent.
+
+##### Checking Ether Balance
+
+You can easily check the Ether balance of an address with more utility methods inside the ```EthUtils``` class.
+
+```c#
+string address = "0x0000000000000000000000000000000000000000";
+decimal balance = await EthUtils.GetEtherBalance(address);
+```
+
+This code will query the Ether balance of a given address at the current block number. The balance is converted from the wei amount into the common readable format in Ether.
+
+#### ERC20 Tokens
+
+#### ERC721 Tokens
+
+#### Ethereum Utils
+
+See the [Hope.Ethereum.Tests](https://github.com/ThatSlyGuy/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum.Tests) code for more code examples.
 
 ### Unity Library
 
