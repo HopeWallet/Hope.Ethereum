@@ -1,10 +1,9 @@
 ﻿using Nethereum.JsonRpc.UnityClient;
 using Nethereum.RPC.Eth.DTOs;
-using NethereumUtils.Unity.Coroutines;
 using System;
 using System.Collections;
 
-namespace NethereumUtils.Unity
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class which extends the nethereum unity transactions to allow for more actions on successful transactions and unsuccessful ones.

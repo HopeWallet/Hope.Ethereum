@@ -1,14 +1,13 @@
-﻿using Nethereum.ABI.FunctionEncoding.Attributes;
+﻿using Hope.Ethereum.Unity.Promises;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Contracts.Extensions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.UnityClient;
 using Nethereum.Signer;
-using NethereumUtils.Unity.Coroutines;
-using NethereumUtils.Unity.Promises;
 using System.Collections;
 
-namespace NethereumUtils.Unity
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class which contains useful utility methods for sending messages to smart contracts or querying data from them.

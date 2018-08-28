@@ -35,14 +35,8 @@
       <HintPath>..\packages\Hope.Ethereum.Unity Packages\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NBitcoin">
-      <HintPath>..\packages\Hope.Ethereum.Unity Packages\NBitcoin.dll</HintPath>
-    </Reference>
     <Reference Include="Nethereum.ABI">
       <HintPath>..\packages\Hope.Ethereum.Unity Packages\Nethereum.ABI.dll</HintPath>
-    </Reference>
-    <Reference Include="Nethereum.Accounts">
-      <HintPath>..\packages\Hope.Ethereum.Unity Packages\Nethereum.Accounts.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Contracts">
       <HintPath>..\packages\Hope.Ethereum.Unity Packages\Nethereum.Contracts.dll</HintPath>

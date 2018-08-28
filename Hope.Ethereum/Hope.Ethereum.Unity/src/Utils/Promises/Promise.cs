@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NethereumUtils.Unity.Promises
+namespace Hope.Ethereum.Unity.Promises
 {
     /// <summary>
     /// Base class which manages the eventual result of a Nethereum UnityRequest.

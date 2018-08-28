@@ -4,8 +4,6 @@ using Hope.Ethereum;
 using Hope.Ethereum.Tokens;
 using Hope.Ethereum.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.Contracts;
 
 namespace Hope.EthereumTests
 {

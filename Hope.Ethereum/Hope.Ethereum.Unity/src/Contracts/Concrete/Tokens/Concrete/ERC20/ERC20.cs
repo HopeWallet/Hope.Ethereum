@@ -1,5 +1,4 @@
-﻿using Hope.Ethereum.FunctionOuput;
-using Hope.Ethereum.Utils;
+﻿using Hope.Ethereum.Utils;
 using System.Numerics;
 using System.Threading.Tasks;
 

@@ -1,12 +1,11 @@
-﻿using Nethereum.Hex.HexTypes;
+﻿using Hope.Ethereum.Unity.Promises;
+using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.UnityClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Signer;
-using NethereumUtils.Unity.Coroutines;
-using NethereumUtils.Unity.Promises;
 using System.Collections;
 
-namespace NethereumUtils.Unity
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Utility class used for sending ether and retrieving the ether balance of certain addresses.

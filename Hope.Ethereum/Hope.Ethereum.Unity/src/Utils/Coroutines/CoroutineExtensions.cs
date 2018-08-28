@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace NethereumUtils.Unity.Coroutines
+namespace Hope.Ethereum.Unity.Utils
 {
     public static class CoroutineExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using Nethereum.Signer;
 
-namespace NethereumUtils.Unity
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class used for providing the network data to other ethereum utility classes.

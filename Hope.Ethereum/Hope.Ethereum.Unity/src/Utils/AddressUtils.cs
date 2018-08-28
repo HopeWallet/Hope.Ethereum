@@ -1,4 +1,4 @@
-﻿namespace NethereumUtils.Unity
+﻿namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class which has some utility methods needed for ethereum addresses and transaction hashes.

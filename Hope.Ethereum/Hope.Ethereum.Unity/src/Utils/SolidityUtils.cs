@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 
-namespace NethereumUtils.Unity
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class which contains some utility methods useful for translating stuff to and from solidity.

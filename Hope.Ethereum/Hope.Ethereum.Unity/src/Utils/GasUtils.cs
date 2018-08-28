@@ -1,15 +1,14 @@
-﻿using Nethereum.Contracts;
+﻿using Hope.Ethereum.Unity.Promises;
+using Nethereum.Contracts;
 using Nethereum.Contracts.Extensions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.UnityClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Util;
-using NethereumUtils.Unity.Coroutines;
-using NethereumUtils.Unity.Promises;
 using System.Collections;
 using System.Numerics;
 
-namespace NethereumUtils.Unity
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class used for anything related to ethereum transaction gas.

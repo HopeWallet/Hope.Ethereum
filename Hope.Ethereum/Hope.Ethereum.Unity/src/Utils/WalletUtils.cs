@@ -1,6 +1,6 @@
 ﻿using Nethereum.HdWallet;
 
-namespace NethereumUtils.Unity.src
+namespace Hope.Ethereum.Unity.Utils
 {
     /// <summary>
     /// Class with a bunch of utility methods which relate to general wallet info and ethereum info of the wallet.
