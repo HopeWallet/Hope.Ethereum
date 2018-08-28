@@ -54,7 +54,6 @@ namespace Hope.Ethereum.Tokens
         /// Gets the token balance of an address.
         /// </summary>
         /// <param name="address"> The address to check the balance of. </param>
-        /// <param name="onBalanceReceived"> Callback action which should pass in the received balance of Gold tokens on the address. </param>
         public async Task<decimal> QueryBalanceOf(string address)
         {
             var balance = await SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
@@ -64,7 +63,6 @@ namespace Hope.Ethereum.Tokens
         /// <summary>
         /// Gets the total supply of this ERC20 token contract.
         /// </summary>
-        /// <param name="onSupplyReceived"> Callback action which should pass in the total supply of this token. </param>
         public async Task<decimal> QueryTotalSupply()
         {
             var supply = await SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
