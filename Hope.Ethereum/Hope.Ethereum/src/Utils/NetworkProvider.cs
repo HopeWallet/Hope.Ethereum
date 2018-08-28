@@ -20,6 +20,9 @@ namespace Hope.Ethereum.Utils
         /// <param name="network"> The new active network chain. </param>
         public static void SwitchNetworkChain(Chain network)
         {
+            if (network != Chain.MainNet && network != Chain.Rinkeby)
+                network = Chain.Rinkeby;
+
             ActiveNetwork = network;
             Web3 = new Web3(GetNetworkChainUrl());
         }
