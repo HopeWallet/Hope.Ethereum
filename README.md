@@ -16,7 +16,7 @@ If you already have Nethereum in your project, simply add only the Hope.Ethereum
 
 ### Unity Library
 
-The required dlls for the Unity Library to function are located in the [Hope.Ethereum.Unity releases](https://github.com/HopeWallet/Hope.Ethereum.Unity/releases). Download the latest Hope.Ethereum.Unity zip file, and add all required dlls to your Unity project's plugins folder.
+The required dlls for the Unity Library to function are located in the [Hope.Ethereum releases](https://github.com/HopeWallet/Hope.Ethereum/releases). Download the latest Hope.Ethereum.Unity zip file, and add all required dlls to your Unity project's plugins folder.
 
 If you already have Nethereum in your project, only add the Hope.Ethereum.Unity dll to the plugins folder.
 
