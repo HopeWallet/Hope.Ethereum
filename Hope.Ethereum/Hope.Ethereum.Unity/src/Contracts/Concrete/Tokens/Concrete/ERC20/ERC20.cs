@@ -1,8 +1,9 @@
-﻿using Hope.Ethereum.Utils;
+﻿using Hope.Ethereum.Unity.FunctionOutput;
+using Hope.Ethereum.Unity.Promises;
+using Hope.Ethereum.Unity.Utils;
 using System.Numerics;
-using System.Threading.Tasks;
 
-namespace Hope.Ethereum.Tokens
+namespace Hope.Ethereum.Unity.Tokens
 {
     /// <summary>
     /// Class which contains methods for interacting with ERC20 tokens.
@@ -32,50 +33,44 @@ namespace Hope.Ethereum.Tokens
         {
         }
 
-        public override async Task<string> QueryName()
+        public override EthCallPromise<SimpleOutputs.String> QueryName()
         {
-            var name = await SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null);
-            return name?.Value;
+            return SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null);
         }
 
-        public override async Task<string> QuerySymbol()
+        public override EthCallPromise<SimpleOutputs.String> QuerySymbol()
         {
-            var symbol = await SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null);
-            return symbol?.Value;
+            return SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null);
         }
 
-        public override async Task<int> QueryDecimals()
+        public override EthCallPromise<SimpleOutputs.UInt256> QueryDecimals()
         {
-            var decimals = await SimpleContractQueries.QueryUInt256Output(new Queries.Decimals(), ContractAddress, null);
-            return decimals?.Value;
+            return SimpleContractQueries.QueryUInt256Output(new Queries.Decimals(), ContractAddress, null);
         }
 
         /// <summary>
         /// Gets the token balance of an address.
         /// </summary>
         /// <param name="address"> The address to check the balance of. </param>
-        public async Task<decimal> QueryBalanceOf(string address)
+        public EthCallPromise<SimpleOutputs.UInt256> QueryBalanceOf(string address)
         {
-            var balance = await SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
-            return SolidityUtils.ConvertFromUInt(balance.Value, Decimals.Value);
+            return SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
         }
 
         /// <summary>
         /// Gets the total supply of this ERC20 token contract.
         /// </summary>
-        public async Task<decimal> QueryTotalSupply()
+        public EthCallPromise<SimpleOutputs.UInt256> QueryTotalSupply()
         {
-            var supply = await SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
-            return SolidityUtils.ConvertFromUInt(supply.Value, Decimals.Value);
+            return SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
         }
 
-        public async Task<decimal> QueryAllowance(string owner, string spender)
+        public EthCallPromise<SimpleOutputs.UInt256> QueryAllowance(string owner, string spender)
         {
-            var allowance = await SimpleContractQueries.QueryUInt256Output(new Queries.Allowance { Owner = owner, Spender = spender }, ContractAddress, null);
-            return SolidityUtils.ConvertFromUInt(allowance.Value, Decimals.Value);
+            return SimpleContractQueries.QueryUInt256Output(new Queries.Allowance { Owner = owner, Spender = spender }, ContractAddress, null);
         }
 
-        public Task<TransactionPoller> Approve(string privateKey, string spender, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise Approve(string privateKey, string spender, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.Approve approve = new Messages.Approve
             {
@@ -86,7 +81,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(approve, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> IncreaseApproval(string privateKey, string spender, decimal addedAmount, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise IncreaseApproval(string privateKey, string spender, decimal addedAmount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.IncreaseApproval increaseApproval = new Messages.IncreaseApproval
             {
@@ -97,7 +92,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(increaseApproval, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> DecreaseApproval(string privateKey, string spender, decimal subtractedAmount, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise DecreaseApproval(string privateKey, string spender, decimal subtractedAmount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.DecreaseApproval decreaseApproval = new Messages.DecreaseApproval
             {
@@ -117,7 +112,7 @@ namespace Hope.Ethereum.Tokens
         /// <param name="addressTo"> The address the tokens are being sent to. </param>
         /// <param name="address"> The address to transfer the tokens to. </param>
         /// <param name="amount"> The amount of tokens to transfer. </param>
-        public Task<TransactionPoller> Transfer(string privateKey, string addressTo, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise Transfer(string privateKey, string addressTo, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.Transfer transfer = new Messages.Transfer
             {
@@ -128,7 +123,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(transfer, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> TransferFrom(string privateKey, string addressFrom, string addressTo, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise TransferFrom(string privateKey, string addressFrom, string addressTo, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.TransferFrom transferFrom = new Messages.TransferFrom
             {

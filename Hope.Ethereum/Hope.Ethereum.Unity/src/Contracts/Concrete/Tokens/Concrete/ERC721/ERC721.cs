@@ -1,12 +1,10 @@
-﻿using Hope.Ethereum.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Hope.Ethereum.Unity.FunctionOutput;
+using Hope.Ethereum.Unity.Promises;
+using Hope.Ethereum.Unity.Utils;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Hope.Ethereum.Tokens
+namespace Hope.Ethereum.Unity.Tokens
 {
     public sealed partial class ERC721 : Token
     {
@@ -26,79 +24,71 @@ namespace Hope.Ethereum.Tokens
         {
         }
 
-        public override Task<int> QueryDecimals()
+        public override EthCallPromise<SimpleOutputs.String> QueryName()
         {
-            return Task.Run(() => 0);
+            return SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null);
         }
 
-        public override async Task<string> QueryName()
+        public override EthCallPromise<SimpleOutputs.String> QuerySymbol()
         {
-            var name = await SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null);
-            return name?.Value;
+            return SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null);
         }
 
-        public override async Task<string> QuerySymbol()
+        public override EthCallPromise<SimpleOutputs.UInt256> QueryDecimals()
         {
-            var symbol = await SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null);
-            return symbol?.Value;
+            EthCallPromise<SimpleOutputs.UInt256> decimalsPromise = new EthCallPromise<SimpleOutputs.UInt256>();
+            decimalsPromise.Build(() => new SimpleOutputs.UInt256 { Value = 0 });
+            return decimalsPromise;
         }
 
         /// <summary>
         /// Gets the token balance of an address.
         /// </summary>
         /// <param name="address"> The address to check the balance of. </param>
-        public async Task<decimal> QueryBalanceOf(string address)
+        public EthCallPromise<SimpleOutputs.UInt256> QueryBalanceOf(string address)
         {
-            var balance = await SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
-            return SolidityUtils.ConvertFromUInt(balance.Value, Decimals.Value);
+            return SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
         }
 
         /// <summary>
         /// Gets the total supply of this ERC721 token contract.
         /// </summary>
-        public async Task<decimal> QueryTotalSupply()
+        public EthCallPromise<SimpleOutputs.UInt256> QueryTotalSupply()
         {
-            var supply = await SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
-            return SolidityUtils.ConvertFromUInt(supply.Value, Decimals.Value);
+            return SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
         }
 
-        public async Task<string> QueryOwnerOf(BigInteger tokenId)
+        public EthCallPromise<SimpleOutputs.Address> QueryOwnerOf(BigInteger tokenId)
         {
-            var supply = await SimpleContractQueries.QueryAddressOutput(new Queries.OwnerOf { TokenId = tokenId }, ContractAddress, null);
-            return supply?.Value;
+            return SimpleContractQueries.QueryAddressOutput(new Queries.OwnerOf { TokenId = tokenId }, ContractAddress, null);
         }
 
-        public async Task<string> QueryTokenURI(BigInteger tokenId)
+        public EthCallPromise<SimpleOutputs.String> QueryTokenURI(BigInteger tokenId)
         {
-            var supply = await SimpleContractQueries.QueryStringOutput(new Queries.TokenURI { TokenId = tokenId }, ContractAddress, null);
-            return supply?.Value;
+            return SimpleContractQueries.QueryStringOutput(new Queries.TokenURI { TokenId = tokenId }, ContractAddress, null);
         }
 
-        public async Task<BigInteger> QueryTokenOfOwnerByIndex(string ownerAddress, BigInteger index)
+        public EthCallPromise<SimpleOutputs.UInt256> QueryTokenOfOwnerByIndex(string ownerAddress, BigInteger index)
         {
-            var tokenId = await SimpleContractQueries.QueryUInt256Output(new Queries.TokenOfOwnerByIndex { Owner = ownerAddress, Index = index }, ContractAddress, null);
-            return tokenId?.Value;
+            return SimpleContractQueries.QueryUInt256Output(new Queries.TokenOfOwnerByIndex { Owner = ownerAddress, Index = index }, ContractAddress, null);
         }
 
-        public async Task<BigInteger> QueryTokenByIndex(BigInteger index)
+        public EthCallPromise<SimpleOutputs.UInt256> QueryTokenByIndex(BigInteger index)
         {
-            var tokenId = await SimpleContractQueries.QueryUInt256Output(new Queries.TokenByIndex { Index = index }, ContractAddress, null);
-            return tokenId?.Value;
+            return SimpleContractQueries.QueryUInt256Output(new Queries.TokenByIndex { Index = index }, ContractAddress, null);
         }
 
-        public async Task<string> QueryGetApproved(BigInteger tokenId)
+        public EthCallPromise<SimpleOutputs.Address> QueryGetApproved(BigInteger tokenId)
         {
-            var approved = await SimpleContractQueries.QueryAddressOutput(new Queries.GetApproved { TokenId = tokenId }, ContractAddress, null);
-            return approved?.Value;
+            return SimpleContractQueries.QueryAddressOutput(new Queries.GetApproved { TokenId = tokenId }, ContractAddress, null);
         }
 
-        public async Task<bool?> QueryIsApprovedForAll(string ownerAddress, string operatorAddress)
+        public EthCallPromise<SimpleOutputs.Bool> QueryIsApprovedForAll(string ownerAddress, string operatorAddress)
         {
-            var approved = await SimpleContractQueries.QueryBoolOutput(new Queries.IsApprovedForAll { Owner = ownerAddress, Operator = operatorAddress }, ContractAddress, null);
-            return approved?.Value;
+            return SimpleContractQueries.QueryBoolOutput(new Queries.IsApprovedForAll { Owner = ownerAddress, Operator = operatorAddress }, ContractAddress, null);
         }
 
-        public Task<TransactionPoller> SafeTransferFrom(string privateKey, string addressFrom, string addressTo, BigInteger tokenId, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise SafeTransferFrom(string privateKey, string addressFrom, string addressTo, BigInteger tokenId, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.SafeTransferFrom safeTransferFrom = new Messages.SafeTransferFrom
             {
@@ -110,7 +100,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(safeTransferFrom, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> SafeTransferFrom(string privateKey, string addressFrom, string addressTo, BigInteger tokenId, byte[] data, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise SafeTransferFrom(string privateKey, string addressFrom, string addressTo, BigInteger tokenId, byte[] data, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.SafeTransferFromExtraData safeTransferFrom = new Messages.SafeTransferFromExtraData
             {
@@ -123,7 +113,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(safeTransferFrom, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> Approve(string privateKey, string addressTo, BigInteger tokenId, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise Approve(string privateKey, string addressTo, BigInteger tokenId, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.Approve approve = new Messages.Approve
             {
@@ -134,7 +124,7 @@ namespace Hope.Ethereum.Tokens
             return ContractUtils.SendContractMessage(approve, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public Task<TransactionPoller> SetApprovalForAll(string privateKey, string operatorAddress, bool approved, BigInteger gasLimit, BigInteger gasPrice)
+        public EthTransactionPromise SetApprovalForAll(string privateKey, string operatorAddress, bool approved, BigInteger gasLimit, BigInteger gasPrice)
         {
             Messages.SetApprovalForAll setApprovalForAll = new Messages.SetApprovalForAll
             {

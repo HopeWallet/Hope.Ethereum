@@ -91,6 +91,15 @@ namespace Hope.Ethereum.Unity.Promises
         }
 
         /// <summary>
+        /// Builds the promise with the arguments.
+        /// </summary>
+        /// <param name="args"> The arguments to build the promise with. </param>
+        public void Build(params Func<object>[] args)
+        {
+            InternalBuild(args);
+        }
+
+        /// <summary>
         /// Invokes the OnPromiseSuccess event.
         /// </summary>
         /// <param name="returnVal"> The return value to pass to the event. </param>

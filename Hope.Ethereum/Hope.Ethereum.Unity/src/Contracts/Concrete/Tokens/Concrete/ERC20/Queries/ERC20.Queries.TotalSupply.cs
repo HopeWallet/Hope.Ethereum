@@ -1,7 +1,7 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace Hope.Ethereum.Tokens
+namespace Hope.Ethereum.Unity.Tokens
 {
     /// <summary>
     /// Class which mimics the ethereum ERC20 token standard and contains most functions which are active in the token standard.

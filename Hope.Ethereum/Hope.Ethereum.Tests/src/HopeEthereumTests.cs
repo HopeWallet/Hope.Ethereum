@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using Hope.Ethereum;
+using Hope.Ethereum.FunctionOuput;
 using Hope.Ethereum.Tokens;
 using Hope.Ethereum.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

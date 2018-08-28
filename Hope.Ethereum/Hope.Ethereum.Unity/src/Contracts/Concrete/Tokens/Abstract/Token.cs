@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Hope.Ethereum.Unity.FunctionOutput;
+using Hope.Ethereum.Unity.Promises;
 
-namespace Hope.Ethereum.Tokens
+namespace Hope.Ethereum.Unity.Tokens
 {
     /// <summary>
     /// Base class for dynamic ethereum tokens.
@@ -61,17 +62,17 @@ namespace Hope.Ethereum.Tokens
             GetDetails();
         }
 
-        private async void GetDetails()
+        private void GetDetails()
         {
-            Name = await QueryName();
-            Symbol = await QuerySymbol();
-            Decimals = await QueryDecimals();
+            QueryName().OnSuccess(name => Name = name?.Value);
+            QuerySymbol().OnSuccess(symbol => Symbol = symbol?.Value);
+            QueryDecimals().OnSuccess(decimals => Decimals = decimals?.Value);
         }
 
-        public abstract Task<string> QueryName();
+        public abstract EthCallPromise<SimpleOutputs.String> QueryName();
 
-        public abstract Task<string> QuerySymbol();
+        public abstract EthCallPromise<SimpleOutputs.String> QuerySymbol();
 
-        public abstract Task<int> QueryDecimals();
+        public abstract EthCallPromise<SimpleOutputs.UInt256> QueryDecimals();
     }
 }

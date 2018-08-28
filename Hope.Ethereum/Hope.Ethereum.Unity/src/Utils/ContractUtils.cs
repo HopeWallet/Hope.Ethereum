@@ -6,6 +6,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.UnityClient;
 using Nethereum.Signer;
 using System.Collections;
+using System.Numerics;
 
 namespace Hope.Ethereum.Unity.Utils
 {
@@ -22,15 +23,15 @@ namespace Hope.Ethereum.Unity.Utils
         /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
         /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="signedUnityRequest"> The <see cref="TransactionSignedUnityRequest"/> to use to send the message. </param>
-        /// <param name="gasPrice"> The <see cref="HexBigInteger"/> gas price to use with the transaction. </param>
-        /// <param name="gasLimit"> The <see cref="HexBigInteger"/> gas limit to use with the transaction. </param>
+        /// <param name="gasPrice"> The <see cref="BigInteger"/> gas price to use with the transaction. </param>
+        /// <param name="gasLimit"> The <see cref="BigInteger"/> gas limit to use with the transaction. </param>
         /// <returns> Promise of the transaction result of sending the contract message. </returns>
         public static EthTransactionPromise SendContractMessage<TFunc>(
             TFunc function,
             string contractAddress,
             string privateKey,
-            HexBigInteger gasPrice,
-            HexBigInteger gasLimit) where TFunc : FunctionMessage
+            BigInteger gasPrice,
+            BigInteger gasLimit) where TFunc : FunctionMessage
         {
             var promise = new EthTransactionPromise();
             _SendContractMessageCoroutine(function, promise, contractAddress, privateKey, gasPrice, gasLimit).StartCoroutine();
@@ -47,15 +48,15 @@ namespace Hope.Ethereum.Unity.Utils
         /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
         /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="signedUnityRequest"> The <see cref="TransactionSignedUnityRequest"/> to use to send the message. </param>
-        /// <param name="gasPrice"> The <see cref="HexBigInteger"/> gas price to use with the transaction. </param>
-        /// <param name="gasLimit"> The <see cref="HexBigInteger"/> gas limit to use with the transaction. </param>
+        /// <param name="gasPrice"> The <see cref="BigInteger"/> gas price to use with the transaction. </param>
+        /// <param name="gasLimit"> The <see cref="BigInteger"/> gas limit to use with the transaction. </param>
         private static IEnumerator _SendContractMessageCoroutine<TFunc>(
             TFunc function,
             EthTransactionPromise promise,
             string contractAddress,
             string privateKey,
-            HexBigInteger gasPrice,
-            HexBigInteger gasLimit) where TFunc : FunctionMessage
+            BigInteger gasPrice,
+            BigInteger gasLimit) where TFunc : FunctionMessage
         {
             function.SetDefaultFromAddressIfNotSet(privateKey);
             function.Gas = gasLimit;

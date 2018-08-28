@@ -1,11 +1,11 @@
-﻿using static Hope.Ethereum.SimpleOutputs;
-using UInt64 = Hope.Ethereum.SimpleOutputs.UInt64;
-using UInt32 = Hope.Ethereum.SimpleOutputs.UInt32;
-using UInt16 = Hope.Ethereum.SimpleOutputs.UInt16;
-using String = Hope.Ethereum.SimpleOutputs.String;
-using System.Threading.Tasks;
+﻿using static Hope.Ethereum.Unity.FunctionOutput.SimpleOutputs;
+using UInt64 = Hope.Ethereum.Unity.FunctionOutput.SimpleOutputs.UInt64;
+using UInt32 = Hope.Ethereum.Unity.FunctionOutput.SimpleOutputs.UInt32;
+using UInt16 = Hope.Ethereum.Unity.FunctionOutput.SimpleOutputs.UInt16;
+using String = Hope.Ethereum.Unity.FunctionOutput.SimpleOutputs.String;
 using Nethereum.Contracts;
-using Hope.Ethereum.Utils;
+using Hope.Ethereum.Unity.Utils;
+using Hope.Ethereum.Unity.Promises;
 
 namespace Hope.Ethereum
 {
@@ -22,7 +22,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a UInt256 output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<UInt256> QueryUInt256Output<TFunc>(
+        public static EthCallPromise<UInt256> QueryUInt256Output<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -38,7 +38,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a UInt128 output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<UInt128> QueryUInt128Output<TFunc>(
+        public static EthCallPromise<UInt128> QueryUInt128Output<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -54,7 +54,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a UInt64 output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<UInt64> QueryUInt64Output<TFunc>(
+        public static EthCallPromise<UInt64> QueryUInt64Output<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -70,7 +70,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a UInt32 output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<UInt32> QueryUInt32Output<TFunc>(
+        public static EthCallPromise<UInt32> QueryUInt32Output<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -86,7 +86,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a UInt16 output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<UInt16> QueryUInt16Output<TFunc>(
+        public static EthCallPromise<UInt16> QueryUInt16Output<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -102,7 +102,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a UInt8 output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<UInt8> QueryUInt8Output<TFunc>(
+        public static EthCallPromise<UInt8> QueryUInt8Output<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -117,7 +117,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a String output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<String> QueryStringOutput<TFunc>(
+        public static EthCallPromise<String> QueryStringOutput<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -132,7 +132,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for an Address output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<Address> QueryAddressOutput<TFunc>(
+        public static EthCallPromise<Address> QueryAddressOutput<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()
@@ -147,7 +147,7 @@ namespace Hope.Ethereum
         /// <param name="function"> The ethereum contract function which will query for a Bool output. </param>
         /// <param name="contractAddress"> The contract address of the function to execute. </param>
         /// <param name="senderAddress"> The address sending the query. </param>
-        public static Task<Bool> QueryBoolOutput<TFunc>(
+        public static EthCallPromise<Bool> QueryBoolOutput<TFunc>(
             TFunc function,
             string contractAddress,
             string senderAddress) where TFunc : FunctionMessage, new()

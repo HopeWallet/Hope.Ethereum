@@ -1,8 +1,8 @@
-﻿using Hope.Ethereum.Utils;
+﻿using Hope.Ethereum.Unity.Utils;
 using Nethereum.Signer;
 using System;
 
-namespace Hope.Ethereum
+namespace Hope.Ethereum.Unity
 {
     public abstract class EthereumContract
     {

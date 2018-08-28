@@ -2,7 +2,7 @@
 using Nethereum.Contracts;
 using System.Numerics;
 
-namespace Hope.Ethereum.Tokens
+namespace Hope.Ethereum.Unity.Tokens
 {
     /// <summary>
     /// Class which mimics the ethereum ERC721 token standard and contains most functions which are active in the token standard.

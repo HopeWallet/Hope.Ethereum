@@ -1,6 +1,6 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 
-namespace Hope.Ethereum
+namespace Hope.Ethereum.Unity.FunctionOutput
 {
     /// <summary>
     /// Class which contains simple output return types from solidity functions.
