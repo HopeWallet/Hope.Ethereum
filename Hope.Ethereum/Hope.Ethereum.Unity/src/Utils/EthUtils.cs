@@ -4,6 +4,7 @@ using Nethereum.JsonRpc.UnityClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Signer;
 using System.Collections;
+using System.Numerics;
 
 namespace Hope.Ethereum.Unity.Utils
 {
@@ -43,19 +44,59 @@ namespace Hope.Ethereum.Unity.Utils
         /// <summary>
         /// Sends ether from this wallet to a given address.
         /// </summary>
-        /// <param name="walletAddress"> The address of the wallet sending the ether. </param>
-        /// <param name="gasLimit"> The gas limit of the ether send transaction. </param>
-        /// <param name="gasPrice"> The gas price of the ether send transaction. </param>
         /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="addressTo"> The address to send the ether to. </param>
         /// <param name="amount"> The amount of ether to send. </param>
         /// <returns> The promise which will contain the result of a successful/unsuccessful transaction. </returns>
         public static EthTransactionPromise SendEther(
-            HexBigInteger gasLimit,
-            HexBigInteger gasPrice,
             string privateKey,
             string addressTo,
             decimal amount)
+        {
+            var promise = new EthTransactionPromise();
+            GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18)).OnSuccess(gasLimit
+                => GasUtils.EstimateGasPrice(GasUtils.GasPriceTarget.Standard).OnSuccess(gasPrice
+                    => _SendEtherCoroutine(promise, gasLimit, gasPrice, privateKey, addressTo, amount).StartCoroutine()));
+
+            return promise;
+        }
+
+        /// <summary>
+        /// Sends ether from this wallet to a given address.
+        /// </summary>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
+        /// <param name="addressTo"> The address to send the ether to. </param>
+        /// <param name="amount"> The amount of ether to send. </param>
+        /// <param name="gasPrice"> The gas price of the ether send transaction. </param>
+        /// <returns> The promise which will contain the result of a successful/unsuccessful transaction. </returns>
+        public static EthTransactionPromise SendEther(
+            string privateKey,
+            string addressTo,
+            decimal amount,
+            BigInteger gasPrice)
+        {
+            var promise = new EthTransactionPromise();
+            GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18))
+                    .OnSuccess(gasLimit => _SendEtherCoroutine(promise, gasLimit, gasPrice, privateKey, addressTo, amount).StartCoroutine());
+
+            return promise;
+        }
+
+        /// <summary>
+        /// Sends ether from this wallet to a given address.
+        /// </summary>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
+        /// <param name="addressTo"> The address to send the ether to. </param>
+        /// <param name="amount"> The amount of ether to send. </param>
+        /// <param name="gasPrice"> The gas price of the ether send transaction. </param>
+        /// <param name="gasLimit"> The gas limit of the ether send transaction. </param>
+        /// <returns> The promise which will contain the result of a successful/unsuccessful transaction. </returns>
+        public static EthTransactionPromise SendEther(
+            string privateKey,
+            string addressTo,
+            decimal amount,
+            BigInteger gasPrice,
+            BigInteger gasLimit)
         {
             var promise = new EthTransactionPromise();
             _SendEtherCoroutine(promise, gasLimit, gasPrice, privateKey, addressTo, amount).StartCoroutine();
@@ -76,15 +117,15 @@ namespace Hope.Ethereum.Unity.Utils
         /// <returns> The time waited for the request to be broadcast to the network. </returns>
         private static IEnumerator _SendEtherCoroutine(
             EthTransactionPromise promise,
-            HexBigInteger gasLimit,
-            HexBigInteger gasPrice,
+            BigInteger gasLimit,
+            BigInteger gasPrice,
             string privateKey,
             string addressTo,
             dynamic amount)
         {
             EthECKey ethKey = new EthECKey(privateKey);
             TransactionSignedUnityRequest unityRequest = new TransactionSignedUnityRequest(NetworkProvider.GetNetworkChainUrl(), privateKey, ethKey.GetPublicAddress());
-            TransactionInput transactionInput = new TransactionInput("", addressTo, ethKey.GetPublicAddress(), gasLimit, gasPrice, new HexBigInteger(SolidityUtils.ConvertToUInt(amount, 18)));
+            TransactionInput transactionInput = new TransactionInput("", addressTo, ethKey.GetPublicAddress(), new HexBigInteger(gasLimit), new HexBigInteger(gasPrice), new HexBigInteger(SolidityUtils.ConvertToUInt(amount, 18)));
             yield return unityRequest.SignAndSendTransaction(transactionInput);
 
             promise.Build(unityRequest, () => unityRequest.Result, () => NetworkProvider.GetNetworkChainUrl());
