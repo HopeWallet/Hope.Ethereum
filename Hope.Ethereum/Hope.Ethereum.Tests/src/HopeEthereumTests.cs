@@ -10,7 +10,6 @@ namespace Hope.EthereumTests
     [TestClass]
     public class HopeEthereumTests
     {
-
         [TestMethod]
         public async Task GetEthSendGasLimit()
         {

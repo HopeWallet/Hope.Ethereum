@@ -8,11 +8,12 @@ public class Test : MonoBehaviour
     {
         NetworkProvider.SwitchNetworkChain(Nethereum.Signer.Chain.MainNet);
 
+        UnknownERC20Tests();
         ERC20Tests();
         ERC721Tests();
     }
 
-    private static void ERC721Tests()
+    private void ERC721Tests()
     {
         // NOTE:
         // Since CryptoKitties was the first draft of ERC721, many functions were not formalized and decided upon.
@@ -24,12 +25,18 @@ public class Test : MonoBehaviour
                      .OnError(Debug.Log);
     }
 
-    private static void ERC20Tests()
+    private void ERC20Tests()
     {
         ERC20 prps = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
 
         prps.QueryBalanceOf("0xa8EF8e0855F84F25666Cc5b37C5aB8cBF9de314F")
             .OnSuccess(balance => Debug.Log(SolidityUtils.ConvertFromUInt(balance.Value, prps.Decimals.Value)))
             .OnError(Debug.Log);
+    }
+
+    private void UnknownERC20Tests()
+    {
+        ERC20 rand = new ERC20("0xe41d2489571d322189246dafa5ebde1f4699f498");
+        rand.OnInitializationSuccessful(() => Debug.Log(rand.Name + " => " + rand.Symbol + " => " + rand.Decimals));
     }
 }

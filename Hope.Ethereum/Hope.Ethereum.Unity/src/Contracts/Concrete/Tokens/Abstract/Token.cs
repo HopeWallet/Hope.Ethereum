@@ -1,5 +1,6 @@
 ﻿using Hope.Ethereum.Unity.FunctionOutput;
 using Hope.Ethereum.Unity.Promises;
+using System;
 
 namespace Hope.Ethereum.Unity.Tokens
 {
@@ -8,6 +9,12 @@ namespace Hope.Ethereum.Unity.Tokens
     /// </summary>
     public abstract class Token : EthereumContract
     {
+        private event Action OnTokenInitializationSuccessful;
+        private event Action OnTokenInitializationUnsuccessful;
+
+        private int initializationCounter;
+        private bool initializationSuccessful;
+
         /// <summary>
         /// The name of the ethereum token.
         /// </summary>
@@ -30,16 +37,12 @@ namespace Hope.Ethereum.Unity.Tokens
         /// <param name="name"> The name of the token. </param>
         /// <param name="symbol"> The symbol of the token. </param>
         /// <param name="decimals"> The decimal count of the token. </param>
-        protected Token(string mainnetAddress, string name, string symbol, int decimals) : base(mainnetAddress)
+        protected Token(string mainnetAddress, string name, string symbol, int decimals) : this(mainnetAddress, string.Empty, name, symbol, decimals)
         {
-            Name = name;
-            Symbol = symbol;
-            Decimals = decimals;
         }
 
-        protected Token(string mainnetAddress) : base(mainnetAddress)
+        protected Token(string mainnetAddress) : this(mainnetAddress, string.Empty)
         {
-            GetDetails();
         }
 
         /// <summary>
@@ -59,14 +62,36 @@ namespace Hope.Ethereum.Unity.Tokens
 
         protected Token(string mainnetAddress, string rinkebyAddress) : base(mainnetAddress, rinkebyAddress)
         {
-            GetDetails();
+            QueryName().OnSuccess(name => Name = name?.Value).OnSuccess(_ => CheckInitializationStatus());
+            QuerySymbol().OnSuccess(symbol => Symbol = symbol?.Value).OnSuccess(_ => CheckInitializationStatus());
+            QueryDecimals().OnSuccess(decimals => Decimals = (int?)decimals?.Value).OnSuccess(_ => CheckInitializationStatus());
         }
 
-        private void GetDetails()
+        public void OnInitializationSuccessful(Action onInitializationSuccessful)
         {
-            QueryName().OnSuccess(name => Name = name?.Value);
-            QuerySymbol().OnSuccess(symbol => Symbol = symbol?.Value);
-            QueryDecimals().OnSuccess(decimals => Decimals = decimals?.Value);
+            if (initializationCounter == 3 && initializationSuccessful)
+                onInitializationSuccessful?.Invoke();
+            else
+                OnTokenInitializationSuccessful += onInitializationSuccessful;
+        }
+
+        public void OnInitializationUnsuccessful(Action onInitializationUnsuccessful)
+        {
+            if (initializationCounter == 3 && !initializationSuccessful)
+                onInitializationUnsuccessful?.Invoke();
+            else
+                OnTokenInitializationUnsuccessful += onInitializationUnsuccessful;
+        }
+
+        private void CheckInitializationStatus()
+        {
+            if (++initializationCounter == 3)
+            {
+                if (initializationSuccessful = Decimals != null && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Symbol))
+                    OnTokenInitializationSuccessful?.Invoke();
+                else
+                    OnTokenInitializationUnsuccessful?.Invoke();
+            }
         }
 
         public abstract EthCallPromise<SimpleOutputs.String> QueryName();
