@@ -26,13 +26,13 @@ The usage for the Hope.Ethereum library is split up into different sections. [Ho
 
 ### Standard Library
 
-#### Ethereum Network
+#### Ethereum Network Provider
 
 All code in the Hope.Ethereum library is driven by the ``` NetworkProvider ``` class. This class is used to provide the required information to the utility classes so that all interaction on the Ethereum blockchain can be executed smoothly and effortlessly. 
 
 By default, the ``` NetworkProvider ``` is set to use the Ethereum mainnet as our core driver. However, if you want to use a different network, you can easily do so.
 
-You can swap in between the Mainnet and Rinkeby chains easily. Any others will result in the network being set to the Mainnet network.
+You can swap in between the Mainnet and Rinkeby chains easily. Any others will result in the network being set to the Rinkeby network.
 
 ```c#
 // Swap to the rinkeby network
