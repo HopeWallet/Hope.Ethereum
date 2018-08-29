@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Hope.Ethereum/Hope_Logo_Black.png?raw=true" alt="Hope Wallet" align="center" width="328px" height="328px"/>
+  <img src="Hope.Ethereum/Hope_Background.png?raw=true" alt="Hope" align="center" width="328px" height="328px"/>
 </p>
 
 # Hope.Ethereum
