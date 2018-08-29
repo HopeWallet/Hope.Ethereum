@@ -1,4 +1,6 @@
-# Hope.Ethereum
+<p align="center">
+  <img src="Hope.Ethereum/Hope_Logo_Black.png?raw=true" alt="Hope Wallet" align="center" width="328px" height="328px"/>
+</p>
 
 Library of classes used for interacting with the Ethereum blockchain through the Nethereum code library. Contains simple classes and utility methods for interacting with ERC20 and ERC721 tokens, sending Ether, and several other Ethereum related bits and pieces.
 
