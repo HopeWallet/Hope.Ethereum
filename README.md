@@ -8,7 +8,7 @@ Includes .NET Standard and Unity game engine variants.
 
 Since the Hope.Ethereum library is split up into two core libraries, the installation is slightly different for the two.
 
-### Standard Library
+### .NET Standard Library
 
 The required dlls for the Standard Library to function are located in the [Hope.Ethereum releases](https://github.com/HopeWallet/Hope.Ethereum/releases). Download the latest Hope.Ethereum zip file, and add all required dlls to your project reference.
 
@@ -23,6 +23,41 @@ If you already have Nethereum in your project, only add the Hope.Ethereum.Unity 
 ## Usage
 
 The usage for the Hope.Ethereum library is split up into different sections. [Hope.Ethereum](https://github.com/HopeWallet/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum) contains the .NET Standard working library, while [Hope.Ethereum.Unity](https://github.com/HopeWallet/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum.Unity) contains the Unity game engine working library.
+
+## Table of Contents
+* Introduction
+  * <a href="#comparison">.NET Standard vs Unity</a>
+  * Ethereum Network
+* General
+  * Ether 
+    * Ether Transfers
+    * Ether Balances
+  * ERC20 Tokens
+    * ERC20 Token Initialization
+    * ERC20 Token Transfers
+    * ERC20 Token Balances
+    * Other ERC20 Token Methods
+  * ERC721 Tokens
+    * ERC721 Token Initialization
+    * ERC721 Token Transfers
+    * ERC721 Token Balances
+    * Other ERC721 Token Methods
+  * Utilities
+    * Address Utilities
+    * Contract Utilities
+    * Eth Utilities
+    * Gas Utilities
+    * Solidity Utilities
+    * Wallet Utillities
+* .NET Standard Specifics
+  * Utilities
+    * TransactionPoller
+* Unity Specifics
+  * Utilities
+    * Promises
+    * Transaction Utilities
+    
+## <a id="comparison"></a>.NET Standard vs Unity
 
 ### Standard Library
 
