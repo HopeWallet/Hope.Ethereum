@@ -20,18 +20,14 @@ The required dlls for the Unity Library to function are located in the [Hope.Eth
 
 If you already have Nethereum in your project, only add the Hope.Ethereum.Unity dll to the plugins folder.
 
-## Usage
-
-The usage for the Hope.Ethereum library is split up into different sections. [Hope.Ethereum](https://github.com/HopeWallet/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum) contains the .NET Standard working library, while [Hope.Ethereum.Unity](https://github.com/HopeWallet/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum.Unity) contains the Unity game engine working library.
-
 ## Table of Contents
 * Introduction
   * <a href="#comparison">.NET Standard vs Unity</a>
-  * Ethereum Network
+  * <a href="#network">Ethereum Network Provider</a>
 * General
   * Ether 
-    * Ether Transfers
-    * Ether Balances
+    * <a href="#ethtransfer">Ether Transfers</a>
+    * <a href="#ethbalance">Ether Balances</a>
   * ERC20 Tokens
     * ERC20 Token Initialization
     * ERC20 Token Transfers
@@ -59,11 +55,40 @@ The usage for the Hope.Ethereum library is split up into different sections. [Ho
     
 ## <a id="comparison"></a>.NET Standard vs Unity
 
-### Standard Library
+The class library for .NET Standard and Unity have been split into different sections for very good reasons. The primary one has to do with the fact that Unity is driven by Coroutines, while .NET Standard is driven through asynchronous methods and Tasks.
 
-#### Ethereum Network Provider
+With .NET Standard, returning queried results from the Ethereum blockchain is quite simple. You can have an async method with a Task return containing your return type as the generic argument. 
 
-All code in the Hope.Ethereum library is driven by the ``` NetworkProvider ``` class. This class is used to provide the required information to the utility classes so that all interaction on the Ethereum blockchain can be executed smoothly and effortlessly. 
+The .NET Standard code for getting the Ether balance of an address is as follows.
+
+```c#
+decimal balance;
+
+string address = "0x0000000000000000000000000000000000000000";
+balance = await EthUtils.GetEtherBalance(address);
+```
+
+You would simply run this code in an async method and get the balance very easily.
+
+With Unity, Coroutines cannot have a return type that is not of type IEnumerator. This can make things rather difficult and annoying when you want to return some result at the end of a Coroutine.
+
+For this we have developed <a href="#promises">Promises</a>. You can think of these as an extremely simplified version of Javascript promises. By utilising an ```EthCallPromise```, we can get our Ether balance easily.
+
+The Unity code for getting the Ether balance of an address is as follows.
+
+```c#
+decimal balance;
+string address = "0x0000000000000000000000000000000000000000";
+
+// If the transaction is successful (OnSuccess), we set our balance variable to the ethBalance result in the lambda expression.
+EthUtils.GetEtherBalance(address).OnSuccess(ethBalance => balance = ethBalance);
+```
+
+These Promises create a very easy and intuitive way to get some results from the Ethereum blockchain without the hindrances that come with Coroutines. You can read more about this in the <a href="#promises">Promises</a> section.
+
+## <a id="network"></a>Ethereum Network Provider
+
+All code in the Hope.Ethereum and Hope.Ethereum.Unity libraries are driven by the ``` NetworkProvider ``` class. This class is used to provide the required information to the utility classes so that all interaction on the Ethereum blockchain can be executed smoothly and effortlessly. 
 
 By default, the ``` NetworkProvider ``` is set to use the Ethereum mainnet as our core driver. However, if you want to use a different network, you can easily do so.
 
@@ -76,13 +101,11 @@ NetworkProvider.SwitchNetworkChain(Chain.Rinkeby);
 
 It is important that you set the ```NetworkProvider``` to the correct network before calling any utility methods. If you are calling ```EthUtils.SendEther``` on the mainnet when you only have Ether on rinkeby, this will result in an error being thrown.
 
-#### Ether
+## <a id="ethtransfer"></a>Ether Transfers
 
-The Hope.Ethereum library contains methods to easily send Ether and view the Ether balance of an address.
+### .NET Standard
 
-##### Sending Ether
-
-You can easily send Ether from one address to another using the Hope.Ethereum library. The code for doing this is as follows:
+You can easily send Ether from one address to another using the Hope.Ethereum library. The .NET Standard code for doing this is as follows:
 
 ```c#
 decimal readableEthAmount = 0.0000000000001m;
@@ -92,7 +115,7 @@ BigInteger gasLimit = 75000;
 BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(readableGasPrice);
 string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
 
-await EthUtils.SendEther(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount, gasPrice)
+(await EthUtils.SendEther(privateKey, "0x5831819C84C05DdcD2568dE72963AC9f7e2833b6", readableEthAmount, gasPrice))
               .OnTransactionSuccessful(() => Console.WriteLine("Transaction successful!"))
               .OnTransactionFailure(() => Console.WriteLine("Transaction failed!"));
 ```
@@ -112,7 +135,11 @@ decimal etherAmount = SolidityUtils.ConvertFromUInt(etherAmountInWei, 18);
 
 The ``` SendEther ``` method has optional overloads which allow for no gas price or gas limit to be input into the method. If this is used, the gas price and gas limit will be estimated accordingly and then sent.
 
-##### Checking Ether Balance
+### Unity
+
+We can also easily send Ether from one address to another 
+
+## <a id="ethbalance"></a>Ether Balances
 
 You can easily check the Ether balance of an address with more utility methods inside the ```EthUtils``` class.
 
@@ -129,15 +156,13 @@ This code will query the Ether balance of a given address at the current block n
 
 #### Ethereum Utils
 
-See the [Hope.Ethereum.Tests](https://github.com/ThatSlyGuy/Hope.Ethereum/tree/master/Hope.Ethereum/Hope.Ethereum.Tests) code for more code examples.
-
-### Unity Library
+## <a id="promises"></a>Promises
 
 In Unity, we unfortunately do not have the luxury of using async and Task returns like in .NET standard. Since Unity uses its own HTTP request system we need to use Coroutines to run our async (not really) code.
 
 However, Coroutines can be quite annoying to work with. When having a wrapper method to delegate the Coroutine calls, code becomes quite cumbersome due to all the Actions you have to pass around through parameters. Having an empty return statement all the time seemed very useless.
 
-To solve these inconveniences, I've created my own simple implementation of js promises. These are the abstract ```Promise<TPromise, TReturn>``` class, and concrete ```EthCallPromise<T>``` and ```EthTransactionPromise```.
+To solve these inconveniences, I've created my own simple implementation of Javascript promises. These are the abstract ```Promise<TPromise, TReturn>``` class, and concrete ```EthCallPromise<T>``` and ```EthTransactionPromise```.
 
 Take a look at the following code.
 
