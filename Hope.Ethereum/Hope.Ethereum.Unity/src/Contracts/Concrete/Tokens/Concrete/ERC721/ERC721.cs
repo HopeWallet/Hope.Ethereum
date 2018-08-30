@@ -2,7 +2,6 @@
 using Hope.Ethereum.Unity.Promises;
 using Hope.Ethereum.Unity.Utils;
 using System.Numerics;
-using System.Threading.Tasks;
 
 namespace Hope.Ethereum.Unity.Tokens
 {
@@ -55,9 +54,9 @@ namespace Hope.Ethereum.Unity.Tokens
         /// Gets the token balance of an address.
         /// </summary>
         /// <param name="address"> The address to check the balance of. </param>
-        public EthCallPromise<decimal> QueryBalanceOf(string address)
+        public EthCallPromise<BigInteger> QueryBalanceOf(string address)
         {
-            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+            EthCallPromise<BigInteger> promise = new EthCallPromise<BigInteger>();
             SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address)
                                  .OnSuccess(balance => promise.Build(() => balance.Value))
                                  .OnError(error => promise.Build(() => "error", () => error));
@@ -68,9 +67,9 @@ namespace Hope.Ethereum.Unity.Tokens
         /// <summary>
         /// Gets the total supply of this ERC721 token contract.
         /// </summary>
-        public EthCallPromise<decimal> QueryTotalSupply()
+        public EthCallPromise<BigInteger> QueryTotalSupply()
         {
-            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+            EthCallPromise<BigInteger> promise = new EthCallPromise<BigInteger>();
             SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null)
                                  .OnSuccess(supply => promise.Build(() => supply.Value))
                                  .OnError(error => promise.Build(() => "error", () => error));
@@ -88,29 +87,54 @@ namespace Hope.Ethereum.Unity.Tokens
             return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.String> QueryTokenURI(BigInteger tokenId)
+        public EthCallPromise<string> QueryTokenURI(BigInteger tokenId)
         {
-            return SimpleContractQueries.QueryStringOutput(new Queries.TokenURI { TokenId = tokenId }, ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryStringOutput(new Queries.TokenURI { TokenId = tokenId }, ContractAddress, null)
+                                 .OnSuccess(uri => promise.Build(() => uri.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.UInt256> QueryTokenOfOwnerByIndex(string ownerAddress, BigInteger index)
+        public EthCallPromise<BigInteger> QueryTokenOfOwnerByIndex(string ownerAddress, BigInteger index)
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.TokenOfOwnerByIndex { Owner = ownerAddress, Index = index }, ContractAddress, null);
+            EthCallPromise<BigInteger> promise = new EthCallPromise<BigInteger>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.TokenOfOwnerByIndex { Owner = ownerAddress, Index = index }, ContractAddress, null)
+                                 .OnSuccess(id => promise.Build(() => id.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.UInt256> QueryTokenByIndex(BigInteger index)
+        public EthCallPromise<BigInteger> QueryTokenByIndex(BigInteger index)
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.TokenByIndex { Index = index }, ContractAddress, null);
+            EthCallPromise<BigInteger> promise = new EthCallPromise<BigInteger>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.TokenByIndex { Index = index }, ContractAddress, null)
+                                 .OnSuccess(id => promise.Build(() => id.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.Address> QueryGetApproved(BigInteger tokenId)
+        public EthCallPromise<string> QueryGetApproved(BigInteger tokenId)
         {
-            return SimpleContractQueries.QueryAddressOutput(new Queries.GetApproved { TokenId = tokenId }, ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryAddressOutput(new Queries.GetApproved { TokenId = tokenId }, ContractAddress, null)
+                                 .OnSuccess(address => promise.Build(() => address.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.Bool> QueryIsApprovedForAll(string ownerAddress, string operatorAddress)
+        public EthCallPromise<bool> QueryIsApprovedForAll(string ownerAddress, string operatorAddress)
         {
-            return SimpleContractQueries.QueryBoolOutput(new Queries.IsApprovedForAll { Owner = ownerAddress, Operator = operatorAddress }, ContractAddress, null);
+            EthCallPromise<bool> promise = new EthCallPromise<bool>();
+            SimpleContractQueries.QueryBoolOutput(new Queries.IsApprovedForAll { Owner = ownerAddress, Operator = operatorAddress }, ContractAddress, null)
+                                 .OnSuccess(approved => promise.Build(() => approved.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
         public EthTransactionPromise SafeTransferFrom(string privateKey, string addressFrom, string addressTo, BigInteger tokenId, BigInteger gasLimit, BigInteger gasPrice)
