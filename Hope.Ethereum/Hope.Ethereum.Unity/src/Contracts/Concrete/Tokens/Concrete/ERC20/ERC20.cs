@@ -81,28 +81,6 @@ namespace Hope.Ethereum.Unity.Tokens
             return ContractUtils.SendContractMessage(approve, privateKey, ContractAddress, gasPrice, gasLimit);
         }
 
-        public EthTransactionPromise IncreaseApproval(string privateKey, string spender, decimal addedAmount, BigInteger gasLimit, BigInteger gasPrice)
-        {
-            Messages.IncreaseApproval increaseApproval = new Messages.IncreaseApproval
-            {
-                Spender = spender,
-                AddedValue = SolidityUtils.ConvertToUInt(addedAmount, Decimals.Value)
-            };
-
-            return ContractUtils.SendContractMessage(increaseApproval, privateKey, ContractAddress, gasPrice, gasLimit);
-        }
-
-        public EthTransactionPromise DecreaseApproval(string privateKey, string spender, decimal subtractedAmount, BigInteger gasLimit, BigInteger gasPrice)
-        {
-            Messages.DecreaseApproval decreaseApproval = new Messages.DecreaseApproval
-            {
-                Spender = spender,
-                SubtractedValue = SolidityUtils.ConvertToUInt(subtractedAmount, Decimals.Value)
-            };
-
-            return ContractUtils.SendContractMessage(decreaseApproval, privateKey, ContractAddress, gasPrice, gasLimit);
-        }
-
         /// <summary>
         /// Transfers a certain number of tokens of this contract from a wallet to another address.
         /// </summary>
