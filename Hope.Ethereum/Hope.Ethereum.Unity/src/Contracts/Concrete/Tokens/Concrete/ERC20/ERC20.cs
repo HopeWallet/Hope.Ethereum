@@ -1,5 +1,4 @@
-﻿using Hope.Ethereum.Unity.FunctionOutput;
-using Hope.Ethereum.Unity.Promises;
+﻿using Hope.Ethereum.Unity.Promises;
 using Hope.Ethereum.Unity.Utils;
 using System.Numerics;
 
