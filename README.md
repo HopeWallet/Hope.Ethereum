@@ -38,14 +38,11 @@ If you already have Nethereum in your project, only add the Hope.Ethereum.Unity 
   * Ether 
     * <a href="#ethtransfer">Ether Transfers</a>
     * <a href="#ethbalance">Ether Balances</a>
-  * ERC20 Tokens
-    * <a href="#erc20-init">ERC20 Token Initialization</a>
-    * <a href="#erc20-messages">ERC20 Token Messages</a>
-    * <a href="#erc20-queries">ERC20 Token Queries</a>
-  * ERC721 Tokens
-    * <a href="#erc721-init">ERC721 Token Initialization</a>
-    * <a href="#erc721-messages">ERC721 Token Messages</a>
-    * <a href="#erc721-queries">ERC721 Token Queries</a>
+  * Ethereum Tokens
+    * <a href="#token-overview">Overview</a>
+    * <a href="#token-init">Initialization</a>
+    * <a href="#token-messages">Messages</a>
+    * <a href="#token-queries">Queries</a>
   * Utilities
     * <a href="#address-utils">Address Utilities</a>
     * <a href="#contract-utils">Contract Utilities</a>
@@ -243,10 +240,22 @@ string address = "0x0000000000000000000000000000000000000000";
 // Print out the Ether balance
 EthUtils.GetEtherBalance(address).OnSuccess(Debug.Log);
 ```
+## <a id="token-overview"></a>Overview
 
-## <a id="erc20-init"></a>ERC20 Token Initialization
+The Hope.Ethereum .NET Standard and Unity libraries both implement code to interact with a variety of Ethereum tokens. The currently implemented tokens are the <b>ERC20</b> and <b>ERC721</b> standards. 
 
-ERC20 token initialization is made very simple in this library. You can create a new instance of the ```ERC20``` class with knowledge of the token's symbol, name, and decimals, or no knowledge at all.
+Each token standard derives from a base class of ```Token```, so the code for each token specification is more or less the same. The only differences between tokens lies in the actual functions they implement.
+
+It is best to refer to documents which show the exact functions of each token specification.
+
+- [ERC20 Token Standard]("https://github.com/ethereum/EIPs/issues/20")
+- [ERC721 Token Standard]("http://erc721.org/")
+
+For all examples below, we will use the ```ERC20``` class to demonstrate how to interact with token code through the Hope.Ethereum library. Any tokens listed above can be used in the exact same way. Please refer to the list above for a list of all implemented Ethereum tokens in the Hope.Ethereum library.
+
+## <a id="token-init"></a>Initialization
+
+Ethereum token initialization is made very simple in this library. You can create a new instance of a ```Token``` class with knowledge of the token's symbol, name, and decimals, or no knowledge at all.
 
 You can create an instance of a known ERC20 token with the following code.
 
@@ -268,13 +277,13 @@ purpose.OnInitializationUnsuccessful(() => Console.WriteLine("Failed to initiali
 
 In this example we initialize a new ERC20 instance with the mainnet and rinkeby addresses, but with no name, symbol, or decimal count. In the ERC20 constructor, it will initialize the Name, Symbol, and Decimals properties based on the input contract addresses. Once it is done, it will call any code that was added to ```purpose.OnInitializationSuccessful``` if it was successfully initialized, or ```purpose.OnInitializationUnsuccessful``` if it was unsuccessfully initialized.
 
-The ERC20 instance is not safe to use until it has called the code in ```OnInitializationSuccessful```. So, if you have code that needs to be executed once the token is initialized, you pass it through the ```OnInitializationSuccessful``` method.
+An instance of ```Token``` initialized without a name, symbol, and decimal count is not safe to use until it has called the code in ```OnInitializationSuccessful```. So, if you have code that needs to be executed once the token is initialized, you pass it through the ```OnInitializationSuccessful``` method.
 
-## <a id="erc20-messages"></a>ERC20 Token Messages
+## <a id="token-messages"></a>Messages
 
-The [ERC20 token standard]("https://github.com/ethereum/EIPs/issues/20") has a variety of functions which interact with the token on the blockchain. The ones we are interested in this case are the transfer, transferFrom, and approve functions.
+Sometimes we may want to interact with our Ethereum tokens on the blockchain. Perhaps we want to transfer some tokens from one address to another, or approve the transfers for one address. All functions that are implemented in the respective token standard will also be implemented in Hope.Ethereum
 
-The ```ERC20``` class in the Hope.Ethereum library has implemented the equivalent of these functions. These methods simply call the solidity functions on deployed ERC20 token contracts.
+Let's take a look at how to transfer some ERC20 tokens.
 
 ```c#
 string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
@@ -289,7 +298,7 @@ purpose.Transfer(privateKey, addressTo, amountToSend, gasLimit, gasPrive);
 
 This is an example of the ERC20 Transfer method in the Hope.Ethereum library. The return value of this method is either of type ```EthTransactionPromise``` or ```Task<TransactionPoller>``` depending on if you are using the Hope.Ethereum.Unity or Hope.Ethereum library.
 
-The other ERC20 messages are implemented in the same way.
+The other ERC20 token messages are implemented in the same way.
 
 ```c#
 ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
@@ -301,13 +310,11 @@ ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose
 // purpose.TransferFrom...
 ```
 
-## <a id="erc20-queries"></a>ERC20 Token Queries
+## <a id="token-queries"></a>Queries
 
-There are also a variety of ERC20 token queries which can be used to get some data from a token.
+There is also a variety of data we can query from Ethereum tokens. For a list of query functions, please refer to the respective token standard.
 
-These functions are allowance, balanceOf, decimals, name, symbol, totalSupply. The Hope.Ethereum library makes it very easy to query this data.
-
-The queries are slightly different for .NET Standard and Unity, so examples for both will be shown below.
+Queries are slightly different in .NET Standard and Unity, so examples for both will be shown below.
 
 ### .NET Standard
 
@@ -327,24 +334,26 @@ decimal balance = await purpose.QueryBalanceOf("0x010101010101010101010101010101
 ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
 
 string name;
-decimal balance;
 
 // Query the name of the contract.
-purpose.QueryName().OnSuccess(tokenName => name = tokenName.Value);
+purpose.QueryName().OnSuccess(tokenName => name = tokenName);
 
-// Query the balance of the address "0x0101010101010101010101010101010101010101" of the contract.
-purpose.QueryBalanceOf("0x0101010101010101010101010101010101010101").OnSuccess(tokenBalance => balance = SolidityUtils.ConvertFromUInt(tokenBalance.Value, 18));
+// Query the balance of the address "0x0101010101010101010101010101010101010101" of the contract and print it out.
+purpose.QueryBalanceOf("0x0101010101010101010101010101010101010101").OnSuccess(Debug.Log);
 ```
 
-## <a id="erc721-init"></a>ERC721 Token Initialization
-## <a id="erc721-messages"></a>ERC721 Token Messages
-## <a id="erc721-queries"></a>ERC721 Token Queries
+The reason for the differences between libraries is due to the fact that the return types are different. The Unity return is of type ```EthCallPromise<T>``` while .NET Standard returns a ```Task<T>```. 
 
 ## <a id="address-utils"></a>Address Utilities
+
 ## <a id="contract-utils"></a>Contract Utilities
+
 ## <a id="eth-utils"></a>Eth Utilities
+
 ## <a id="gas-utils"></a>Gas Utilities
+
 ## <a id="solidity-utils"></a>Solidity Utilities
+
 ## <a id="wallet-utils"></a>Wallet Utilities
 
 ## Final Words
