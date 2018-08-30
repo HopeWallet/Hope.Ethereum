@@ -33,19 +33,34 @@ namespace Hope.Ethereum.Unity.Tokens
         {
         }
 
-        public override EthCallPromise<SimpleOutputs.String> QueryName()
+        public override EthCallPromise<string> QueryName()
         {
-            return SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null)
+                                 .OnSuccess(name => promise.Build(() => name?.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public override EthCallPromise<SimpleOutputs.String> QuerySymbol()
+        public override EthCallPromise<string> QuerySymbol()
         {
-            return SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null)
+                                 .OnSuccess(symbol => promise.Build(() => symbol?.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public override EthCallPromise<SimpleOutputs.UInt256> QueryDecimals()
+        public override EthCallPromise<int?> QueryDecimals()
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.Decimals(), ContractAddress, null);
+            EthCallPromise<int?> promise = new EthCallPromise<int?>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.Decimals(), ContractAddress, null)
+                                 .OnSuccess(decimals => promise.Build(() => (int?)decimals?.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
         /// <summary>
@@ -54,12 +69,10 @@ namespace Hope.Ethereum.Unity.Tokens
         /// <param name="address"> The address to check the balance of. </param>
         public EthCallPromise<decimal> QueryBalanceOf(string address)
         {
-            // TODO: Test
             EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
-
-            EthCallPromise<SimpleOutputs.UInt256> balancePromise = SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
-            balancePromise.OnSuccess(balance => promise.Build(() => SolidityUtils.ConvertFromUInt(balance.Value, Decimals.Value)));
-            balancePromise.OnError(error => promise.Build(() => "error", () => error));
+            SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address)
+                                 .OnSuccess(balance => promise.Build(() => SolidityUtils.ConvertFromUInt(balance.Value, Decimals.Value)))
+                                 .OnError(error => promise.Build(() => "error", () => error));
 
             return promise;
         }
@@ -67,14 +80,24 @@ namespace Hope.Ethereum.Unity.Tokens
         /// <summary>
         /// Gets the total supply of this ERC20 token contract.
         /// </summary>
-        public EthCallPromise<SimpleOutputs.UInt256> QueryTotalSupply()
+        public EthCallPromise<decimal> QueryTotalSupply()
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
+            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null)
+                                 .OnSuccess(supply => promise.Build(() => SolidityUtils.ConvertFromUInt(supply.Value, Decimals.Value)))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.UInt256> QueryAllowance(string owner, string spender)
+        public EthCallPromise<decimal> QueryAllowance(string owner, string spender)
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.Allowance { Owner = owner, Spender = spender }, ContractAddress, null);
+            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.Allowance { Owner = owner, Spender = spender }, ContractAddress, null)
+                                 .OnSuccess(allowance => promise.Build(() => SolidityUtils.ConvertFromUInt(allowance.Value, Decimals.Value)))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
         public EthTransactionPromise Approve(string privateKey, string spender, decimal amount, BigInteger gasLimit, BigInteger gasPrice)
