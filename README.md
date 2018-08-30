@@ -43,16 +43,16 @@ If you already have Nethereum in your project, only add the Hope.Ethereum.Unity 
     * <a href="#erc20-messages">ERC20 Token Messages</a>
     * <a href="#erc20-queries">ERC20 Token Queries</a>
   * ERC721 Tokens
-    * ERC721 Token Initialization
-    * ERC721 Token Messages
-    * ERC721 Token Queries
+    * <a href="#erc721-init">ERC721 Token Initialization</a>
+    * <a href="#erc721-messages">ERC721 Token Messages</a>
+    * <a href="#erc721-queries">ERC721 Token Queries</a>
   * Utilities
-    * Address Utilities
-    * Contract Utilities
-    * Eth Utilities
-    * Gas Utilities
-    * Solidity Utilities
-    * Wallet Utillities
+    * <a href="#address-utils">Address Utilities</a>
+    * <a href="#contract-utils">Contract Utilities</a>
+    * <a href="#eth-utils">Eth Utilities</a>
+    * <a href="#gas-utils">Gas Utilities</a>
+    * <a href="#solidity-utils">Solidity Utilities</a>
+    * <a href="#wallet-utils">Wallet Utilities</a>
     
 ## <a id="comparison"></a>.NET Standard vs Unity
 
@@ -276,7 +276,76 @@ The [ERC20 token standard]("https://github.com/ethereum/EIPs/issues/20") has a v
 
 The ```ERC20``` class in the Hope.Ethereum library has implemented the equivalent of these functions. These methods simply call the solidity functions on deployed ERC20 token contracts.
 
+```c#
+string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
+string addressTo = "0x0101010101010101010101010101010101010101";
+decimal amountToSend = 5;
+BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(2.5m);
+BigInteger gasLimit = 21000;
+
+ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
+purpose.Transfer(privateKey, addressTo, amountToSend, gasLimit, gasPrive);
+```
+
+This is an example of the ERC20 Transfer method in the Hope.Ethereum library. The return value of this method is either of type ```EthTransactionPromise``` or ```Task<TransactionPoller>``` depending on if you are using the Hope.Ethereum.Unity or Hope.Ethereum library.
+
+The other ERC20 messages are implemented in the same way.
+
+```c#
+ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
+
+// Approve method
+// purpose.Approve...
+
+// TransferFrom metho:
+// purpose.TransferFrom...
+```
+
 ## <a id="erc20-queries"></a>ERC20 Token Queries
+
+There are also a variety of ERC20 token queries which can be used to get some data from a token.
+
+These functions are allowance, balanceOf, decimals, name, symbol, totalSupply. The Hope.Ethereum library makes it very easy to query this data.
+
+The queries are slightly different for .NET Standard and Unity, so examples for both will be shown below.
+
+### .NET Standard
+
+```c#
+ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
+
+// Query the name of the contract.
+string name = await purpose.QueryName();
+
+// Query the balance of the address "0x0101010101010101010101010101010101010101" of the contract.
+decimal balance = await purpose.QueryBalanceOf("0x0101010101010101010101010101010101010101");
+```
+
+### Unity
+
+```c#
+ERC20 purpose = new ERC20("0xd94F2778e2B3913C53637Ae60647598bE588c570", "Purpose", "PRPS", 18);
+
+string name;
+decimal balance;
+
+// Query the name of the contract.
+purpose.QueryName().OnSuccess(tokenName => name = tokenName.Value);
+
+// Query the balance of the address "0x0101010101010101010101010101010101010101" of the contract.
+purpose.QueryBalanceOf("0x0101010101010101010101010101010101010101").OnSuccess(tokenBalance => balance = SolidityUtils.ConvertFromUInt(tokenBalance.Value, 18));
+```
+
+## <a id="erc721-init"></a>ERC721 Token Initialization
+## <a id="erc721-messages"></a>ERC721 Token Messages
+## <a id="erc721-queries"></a>ERC721 Token Queries
+
+## <a id="address-utils"></a>Address Utilities
+## <a id="contract-utils"></a>Contract Utilities
+## <a id="eth-utils"></a>Eth Utilities
+## <a id="gas-utils"></a>Gas Utilities
+## <a id="solidity-utils"></a>Solidity Utilities
+## <a id="wallet-utils"></a>Wallet Utilities
 
 ## Final Words
 
