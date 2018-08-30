@@ -14,7 +14,11 @@ namespace Hope.Ethereum.Unity.Promises
         /// <param name="args"> The arguments passed to the EthCallPromise. </param>
         protected override void InternalBuild(params Func<object>[] args)
         {
-            InternalInvokeSuccess((T)args[0]?.Invoke());
+            var arg = args[0]?.Invoke();
+            if (arg.GetType() == typeof(string) && ((string)arg).Equals("error"))
+                InternalInvokeError((string)args[1]?.Invoke());
+            else
+                InternalInvokeSuccess((T)arg);
         }
     }
 }

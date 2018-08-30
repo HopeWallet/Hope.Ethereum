@@ -52,9 +52,16 @@ namespace Hope.Ethereum.Unity.Tokens
         /// Gets the token balance of an address.
         /// </summary>
         /// <param name="address"> The address to check the balance of. </param>
-        public EthCallPromise<SimpleOutputs.UInt256> QueryBalanceOf(string address)
+        public EthCallPromise<decimal> QueryBalanceOf(string address)
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
+            // TODO: Test
+            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+
+            EthCallPromise<SimpleOutputs.UInt256> balancePromise = SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
+            balancePromise.OnSuccess(balance => promise.Build(() => SolidityUtils.ConvertFromUInt(balance.Value, Decimals.Value)));
+            balancePromise.OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
         /// <summary>
