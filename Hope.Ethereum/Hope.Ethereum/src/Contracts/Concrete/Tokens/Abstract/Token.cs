@@ -115,6 +115,6 @@ namespace Hope.Ethereum.Tokens
 
         public abstract Task<string> QuerySymbol();
 
-        public abstract Task<int> QueryDecimals();
+        public abstract Task<int?> QueryDecimals();
     }
 }

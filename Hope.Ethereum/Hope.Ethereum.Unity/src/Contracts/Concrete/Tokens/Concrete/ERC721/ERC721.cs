@@ -24,43 +24,68 @@ namespace Hope.Ethereum.Unity.Tokens
         {
         }
 
-        public override EthCallPromise<SimpleOutputs.String> QueryName()
+        public override EthCallPromise<string> QueryName()
         {
-            return SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryStringOutput(new Queries.Name(), ContractAddress, null)
+                                 .OnSuccess(name => promise.Build(() => name?.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public override EthCallPromise<SimpleOutputs.String> QuerySymbol()
+        public override EthCallPromise<string> QuerySymbol()
         {
-            return SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryStringOutput(new Queries.Symbol(), ContractAddress, null)
+                                 .OnSuccess(symbol => promise.Build(() => symbol?.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public override EthCallPromise<SimpleOutputs.UInt256> QueryDecimals()
+        public override EthCallPromise<int?> QueryDecimals()
         {
-            EthCallPromise<SimpleOutputs.UInt256> decimalsPromise = new EthCallPromise<SimpleOutputs.UInt256>();
-            decimalsPromise.Build(() => new SimpleOutputs.UInt256 { Value = 0 });
-            return decimalsPromise;
+            EthCallPromise<int?> promise = new EthCallPromise<int?>();
+            promise.Build(() => 0);
+            return promise;
         }
 
         /// <summary>
         /// Gets the token balance of an address.
         /// </summary>
         /// <param name="address"> The address to check the balance of. </param>
-        public EthCallPromise<SimpleOutputs.UInt256> QueryBalanceOf(string address)
+        public EthCallPromise<decimal> QueryBalanceOf(string address)
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address);
+            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.BalanceOf { Owner = address }, ContractAddress, address)
+                                 .OnSuccess(balance => promise.Build(() => balance.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
         /// <summary>
         /// Gets the total supply of this ERC721 token contract.
         /// </summary>
-        public EthCallPromise<SimpleOutputs.UInt256> QueryTotalSupply()
+        public EthCallPromise<decimal> QueryTotalSupply()
         {
-            return SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null);
+            EthCallPromise<decimal> promise = new EthCallPromise<decimal>();
+            SimpleContractQueries.QueryUInt256Output(new Queries.TotalSupply(), ContractAddress, null)
+                                 .OnSuccess(supply => promise.Build(() => supply.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
-        public EthCallPromise<SimpleOutputs.Address> QueryOwnerOf(BigInteger tokenId)
+        public EthCallPromise<string> QueryOwnerOf(BigInteger tokenId)
         {
-            return SimpleContractQueries.QueryAddressOutput(new Queries.OwnerOf { TokenId = tokenId }, ContractAddress, null);
+            EthCallPromise<string> promise = new EthCallPromise<string>();
+            SimpleContractQueries.QueryAddressOutput(new Queries.OwnerOf { TokenId = tokenId }, ContractAddress, null)
+                                 .OnSuccess(owner => promise.Build(() => owner.Value))
+                                 .OnError(error => promise.Build(() => "error", () => error));
+
+            return promise;
         }
 
         public EthCallPromise<SimpleOutputs.String> QueryTokenURI(BigInteger tokenId)

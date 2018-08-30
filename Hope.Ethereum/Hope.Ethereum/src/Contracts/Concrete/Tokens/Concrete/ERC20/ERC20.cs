@@ -45,7 +45,7 @@ namespace Hope.Ethereum.Tokens
             return symbol?.Value;
         }
 
-        public override async Task<int> QueryDecimals()
+        public override async Task<int?> QueryDecimals()
         {
             var decimals = await SimpleContractQueries.QueryUInt256Output(new Queries.Decimals(), ContractAddress, null);
             return decimals?.Value;
