@@ -18,20 +18,10 @@ public class Test : MonoBehaviour
 
     private void FakeERC20Test()
     {
-        QuerySymbol().OnSuccess(_ => Debug.Log("Success")).OnError(_ => Debug.Log("Error"));
-        //ERC20 erc20 = new ERC20("0x0000000000000000000000000000000000000000");
-        //erc20.OnInitializationSuccessful(() => Debug.Log("Initialization Successful"));
-        //erc20.OnInitializationUnsuccessful(() => Debug.Log("Initialization Unsuccessful"));
-    }
-
-    public EthCallPromise<string> QuerySymbol()
-    {
-        EthCallPromise<string> promise = new EthCallPromise<string>();
-        SimpleContractQueries.QueryStringOutput(new ERC20.Queries.Symbol(), "0x0000000000000000000000000000000000000000", null)
-                             .OnSuccess(symbol => promise.Build(() => symbol?.Value))
-                             .OnError(error => promise.Build(() => "error", () => error));
-
-        return promise;
+        // Attempt to initialize a fake ERC20 token will result in OnInitializationUnsuccessful.
+        ERC20 erc20 = new ERC20("0x0000000000000000000000000000000000000000");
+        erc20.OnInitializationSuccessful(() => Debug.Log("Initialization Successful"));
+        erc20.OnInitializationUnsuccessful(() => Debug.Log("Initialization Unsuccessful"));
     }
 
     private void ERC721Tests()

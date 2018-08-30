@@ -62,9 +62,14 @@ namespace Hope.Ethereum.Unity.Tokens
 
         protected Token(string mainnetAddress, string rinkebyAddress) : base(mainnetAddress, rinkebyAddress)
         {
-            QueryName().OnSuccess(name => Name = name).OnSuccess(_ => CheckInitializationStatus());
-            QuerySymbol().OnSuccess(symbol => Symbol = symbol).OnSuccess(_ => CheckInitializationStatus());
-            QueryDecimals().OnSuccess(decimals => Decimals = decimals).OnSuccess(_ => CheckInitializationStatus());
+            InitializationQuery(QueryName, name => Name = name, _ => Name = null);
+            InitializationQuery(QuerySymbol, symbol => Symbol = symbol, _ => Symbol = null);
+            InitializationQuery(QueryDecimals, decimals => Decimals = decimals, _ => Decimals = null);
+        }
+
+        private void InitializationQuery<T>(Func<EthCallPromise<T>> query, Action<T> onSuccess, Action<string> onError)
+        {
+            query().OnSuccess(onSuccess).OnError(onError).OnSuccess(_ => CheckInitializationStatus()).OnError(_ => CheckInitializationStatus());
         }
 
         public void OnInitializationSuccessful(Action onInitializationSuccessful)
