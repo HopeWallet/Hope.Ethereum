@@ -248,8 +248,8 @@ Each token standard derives from a base class of ```Token```, so the code for ea
 
 It is best to refer to documents which show the exact functions of each token specification.
 
-- [ERC20 Token Standard]("https://github.com/ethereum/EIPs/issues/20")
-- [ERC721 Token Standard]("http://erc721.org/")
+- [ERC20 Token Standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md)
+- [ERC721 Token Standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md)
 
 For all examples below, we will use the ```ERC20``` class to demonstrate how to interact with token code through the Hope.Ethereum library. Any tokens listed above can be used in the exact same way. Please refer to the list above for a list of all implemented Ethereum tokens in the Hope.Ethereum library.
 
