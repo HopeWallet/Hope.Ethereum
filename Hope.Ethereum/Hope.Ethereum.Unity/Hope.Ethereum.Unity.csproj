@@ -91,8 +91,6 @@
     <Compile Include="src\Contracts\Concrete\Tokens\Abstract\Token.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\ERC20.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Messages\ERC20.Messages.Approve.cs" />
-    <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Messages\ERC20.Messages.DecreaseApproval.cs" />
-    <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Messages\ERC20.Messages.IncreaseApproval.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Messages\ERC20.Messages.Transfer.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Messages\ERC20.Messages.TransferFrom.cs" />
     <Compile Include="src\Contracts\Concrete\Tokens\Concrete\ERC20\Queries\ERC20.Queries.Allowance.cs" />
