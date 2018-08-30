@@ -15,7 +15,9 @@ namespace Hope.Ethereum.Unity.Promises
         protected override void InternalBuild(params Func<object>[] args)
         {
             var arg = args[0]?.Invoke();
-            if (arg.GetType() == typeof(string) && ((string)arg).Equals("error"))
+            if (arg == null)
+                InternalInvokeError("Error retrieving data. Please make sure the contract address has the function you are trying to execute.");
+            else if (arg.GetType() == typeof(string) && ((string)arg).Equals("error"))
                 InternalInvokeError((string)args[1]?.Invoke());
             else
                 InternalInvokeSuccess((T)arg);

@@ -23,9 +23,9 @@ namespace Hope.Ethereum.Tokens
         {
         }
 
-        public override Task<int> QueryDecimals()
+        public override Task<int?> QueryDecimals()
         {
-            return Task.Run(() => 0);
+            return Task.Run(() => (int?)0);
         }
 
         public override async Task<string> QueryName()
