@@ -7,7 +7,7 @@ namespace Hope.Ethereum.Tokens
     /// <summary>
     /// Class which mimics the ethereum ERC721 token standard and contains most functions which are active in the token standard.
     /// </summary>
-    public sealed partial class ERC721
+    public partial class ERC721
     {
         /// <summary>
         /// Class which contains the different queries for receiving data from the ERC721 token contract.
