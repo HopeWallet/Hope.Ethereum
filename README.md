@@ -490,6 +490,12 @@ You can also convert a readable value back to the uint value using the following
 BigInteger uintValue = SolidityUtils.ConvertToUInt(2.62m, 18);
 ```
 
+## Contributing
+
+Contributions are always welcome! Whether it has to do with code refactoring, feature addition, or bugs - all are appreciated!
+
+Create an [issue](https://github.com/HopeWallet/Hope.Ethereum/issues) and create pull requests, and they will all be taken a look at!
+
 ## Final Words
 
 This is a library of utility classes that were created for use in the Hope Ethereum wallet. This library won't likely get updated very much unless there are any glaring issues anywhere that haven't been discovered. If you encounter any problems, post an issue and support will gladly be provided!
