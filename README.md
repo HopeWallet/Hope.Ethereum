@@ -2,6 +2,11 @@
   <img src="Hope.Ethereum/Hope_Background.png?raw=true" alt="Hope" align="center" width="785px" height="328px"/>
 </p>
 
+[![CodeFactor][0]][1]
+
+[0]: https://www.codefactor.io/repository/github/hopewallet/hope.ethereum/badge
+[1]: https://www.codefactor.io/repository/github/hopewallet/hope.ethereum
+
 # Hope.Ethereum
 
 Library of classes used for interacting with the Ethereum blockchain through the Nethereum code library. Contains simple classes and utility methods for interacting with ERC20 and ERC721 tokens, sending Ether, and several other Ethereum related bits and pieces.
