@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Hope.Ethereum.Unity.Tokens
 {
-    public sealed partial class ERC721 : Token
+    public partial class ERC721 : Token
     {
         public ERC721(string mainnetAddress) : base(mainnetAddress)
         {

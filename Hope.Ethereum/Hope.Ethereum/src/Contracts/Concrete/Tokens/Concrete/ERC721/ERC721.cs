@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hope.Ethereum.Tokens
 {
-    public sealed partial class ERC721 : Token
+    public partial class ERC721 : Token
     {
         public ERC721(string mainnetAddress) : base(mainnetAddress)
         {

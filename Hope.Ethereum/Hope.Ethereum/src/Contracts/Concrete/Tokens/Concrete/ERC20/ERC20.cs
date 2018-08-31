@@ -8,7 +8,7 @@ namespace Hope.Ethereum.Tokens
     /// <summary>
     /// Class which contains methods for interacting with ERC20 tokens.
     /// </summary>
-    public sealed partial class ERC20 : Token
+    public partial class ERC20 : Token
     {
         public ERC20(string mainnetAddress, string rinkebyAddress) : base(mainnetAddress, rinkebyAddress)
         {
