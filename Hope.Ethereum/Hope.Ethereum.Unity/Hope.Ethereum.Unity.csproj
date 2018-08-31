@@ -137,7 +137,6 @@
     <Compile Include="src\Utils\Promises\Promise.cs" />
     <Compile Include="src\Utils\SolidityUtils.cs" />
     <Compile Include="src\Utils\TransactionUtils.cs" />
-    <Compile Include="src\Utils\WalletUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

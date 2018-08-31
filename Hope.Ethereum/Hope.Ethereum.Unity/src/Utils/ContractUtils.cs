@@ -22,7 +22,51 @@ namespace Hope.Ethereum.Unity.Utils
         /// <param name="function"> The function to execute. </param>
         /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
         /// <param name="privateKey"> The private key of the address sending the transaction. </param>
-        /// <param name="signedUnityRequest"> The <see cref="TransactionSignedUnityRequest"/> to use to send the message. </param>
+        /// <returns> Promise of the transaction result of sending the contract message. </returns>
+        public static EthTransactionPromise SendContractMessage<TFunc>(
+            TFunc function,
+            string contractAddress,
+            string privateKey) where TFunc : FunctionMessage
+        {
+            EthECKey ethKey = new EthECKey(privateKey);
+            var promise = new EthTransactionPromise();
+            GasUtils.EstimateContractGasLimit(function, contractAddress, ethKey.GetPublicAddress())
+                    .OnSuccess(gasLimit => GasUtils.EstimateGasPrice()
+                                                   .OnSuccess(gasPrice => _SendContractMessageCoroutine(function, promise, contractAddress, privateKey, gasPrice, gasLimit).StartCoroutine()));
+
+            return promise;
+        }
+
+        /// <summary>
+        /// Sends a message to an ethereum smart contract with the intent to change a part of the contract on the blockchain.
+        /// </summary>
+        /// <typeparam name="TFunc"> The <see cref="FunctionMessage"/> to execute on the blockchain given the contract address. </typeparam>
+        /// <param name="function"> The function to execute. </param>
+        /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
+        /// <param name="gasPrice"> The <see cref="BigInteger"/> gas price to use with the transaction. </param>
+        /// <returns> Promise of the transaction result of sending the contract message. </returns>
+        public static EthTransactionPromise SendContractMessage<TFunc>(
+            TFunc function,
+            string contractAddress,
+            string privateKey,
+            BigInteger gasPrice) where TFunc : FunctionMessage
+        {
+            EthECKey ethKey = new EthECKey(privateKey);
+            var promise = new EthTransactionPromise();
+            GasUtils.EstimateContractGasLimit(function, contractAddress, ethKey.GetPublicAddress())
+                    .OnSuccess(gasLimit => _SendContractMessageCoroutine(function, promise, contractAddress, privateKey, gasPrice, gasLimit).StartCoroutine());
+
+            return promise;
+        }
+
+        /// <summary>
+        /// Sends a message to an ethereum smart contract with the intent to change a part of the contract on the blockchain.
+        /// </summary>
+        /// <typeparam name="TFunc"> The <see cref="FunctionMessage"/> to execute on the blockchain given the contract address. </typeparam>
+        /// <param name="function"> The function to execute. </param>
+        /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
+        /// <param name="privateKey"> The private key of the address sending the transaction. </param>
         /// <param name="gasPrice"> The <see cref="BigInteger"/> gas price to use with the transaction. </param>
         /// <param name="gasLimit"> The <see cref="BigInteger"/> gas limit to use with the transaction. </param>
         /// <returns> Promise of the transaction result of sending the contract message. </returns>
@@ -47,7 +91,6 @@ namespace Hope.Ethereum.Unity.Utils
         /// <param name="promise"> Promise of the transaction result of sending the contract message. </param>
         /// <param name="contractAddress"> The contract address to execute the <see cref="FunctionMessage"/> on. </param>
         /// <param name="privateKey"> The private key of the address sending the transaction. </param>
-        /// <param name="signedUnityRequest"> The <see cref="TransactionSignedUnityRequest"/> to use to send the message. </param>
         /// <param name="gasPrice"> The <see cref="BigInteger"/> gas price to use with the transaction. </param>
         /// <param name="gasLimit"> The <see cref="BigInteger"/> gas limit to use with the transaction. </param>
         private static IEnumerator _SendContractMessageCoroutine<TFunc>(
@@ -58,11 +101,12 @@ namespace Hope.Ethereum.Unity.Utils
             BigInteger gasPrice,
             BigInteger gasLimit) where TFunc : FunctionMessage
         {
-            function.SetDefaultFromAddressIfNotSet(privateKey);
+            EthECKey ethKey = new EthECKey(privateKey);
+
+            function.SetDefaultFromAddressIfNotSet(ethKey.GetPublicAddress());
             function.Gas = gasLimit;
             function.GasPrice = gasPrice;
 
-            EthECKey ethKey = new EthECKey(privateKey);
             TransactionSignedUnityRequest unityRequest = new TransactionSignedUnityRequest(NetworkProvider.GetNetworkChainUrl(), privateKey, ethKey.GetPublicAddress());
 
             yield return unityRequest.SignAndSendTransaction(function.CreateTransactionInput(contractAddress));

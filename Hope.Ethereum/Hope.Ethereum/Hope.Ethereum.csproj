@@ -208,7 +208,6 @@
     <Compile Include="src\Utils\NetworkProvider.cs" />
     <Compile Include="src\Utils\SolidityUtils.cs" />
     <Compile Include="src\Utils\TransactionPoller.cs" />
-    <Compile Include="src\Utils\WalletUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

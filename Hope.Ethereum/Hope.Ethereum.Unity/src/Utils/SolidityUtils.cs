@@ -11,32 +11,6 @@ namespace Hope.Ethereum.Unity.Utils
         public static readonly Dictionary<int, BigInteger> DecimalValueLookup = new Dictionary<int, BigInteger>();
 
         /// <summary>
-        /// Extracts the function parameters from the given input string.
-        /// </summary>
-        /// <param name="inputData"> The input of the contract function. </param>
-        /// <returns> The compiled array of strings which contain the data of each parameter. The name of the function is in the first index, parameters are in the rest. </returns>
-        public static string[] ExtractFunctionParameters(string inputData)
-        {
-            string[] funcParams = new string[1 + (inputData.Length / 64)];
-
-            for (int i = inputData.Length; i > 0; i -= 64)
-            {
-                var start = i - 64;
-                var length = start < 0 ? inputData.Length % 64 : 64;
-
-                if (start < 0)
-                    start = 0;
-
-                var param = inputData.Substring(start, length);
-                var index = funcParams.Length - ((inputData.Length - i) / 64) - 1;
-
-                funcParams[index] = index == 0 ? param : param.TrimStart('0');
-            }
-
-            return funcParams;
-        }
-
-        /// <summary>
         /// Converts a number from its current readable representation to a uint usable in solidity.
         /// </summary>
         /// <param name="number"> The number to convert to solidity uint format. </param>

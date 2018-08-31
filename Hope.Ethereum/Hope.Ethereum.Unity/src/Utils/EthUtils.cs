@@ -54,9 +54,9 @@ namespace Hope.Ethereum.Unity.Utils
             decimal amount)
         {
             var promise = new EthTransactionPromise();
-            GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18)).OnSuccess(gasLimit
-                => GasUtils.EstimateGasPrice(GasUtils.GasPriceTarget.Standard).OnSuccess(gasPrice
-                    => _SendEtherCoroutine(promise, gasLimit, gasPrice, privateKey, addressTo, amount).StartCoroutine()));
+            GasUtils.EstimateEthGasLimit(addressTo, SolidityUtils.ConvertToUInt(amount, 18))
+                    .OnSuccess(gasLimit => GasUtils.EstimateGasPrice()
+                                                   .OnSuccess(gasPrice => _SendEtherCoroutine(promise, gasLimit, gasPrice, privateKey, addressTo, amount).StartCoroutine()));
 
             return promise;
         }
