@@ -2,7 +2,9 @@
   <img src="Hope.Ethereum/Hope_Background.png?raw=true" alt="Hope" align="center" width="785px" height="328px"/>
 </p>
 
-[![CodeFactor][0]][1]
+| Code Quality |
+| :----|
+| [![CodeFactor][0]][1] |
 
 [0]: https://www.codefactor.io/repository/github/hopewallet/hope.ethereum/badge
 [1]: https://www.codefactor.io/repository/github/hopewallet/hope.ethereum
