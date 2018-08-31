@@ -337,7 +337,7 @@ string name;
 purpose.QueryName().OnSuccess(tokenName => name = tokenName);
 
 // Query the balance of the address "0x0101010101010101010101010101010101010101" of the contract and print it out.
-purpose.QueryBalanceOf("0x0101010101010101010101010101010101010101").OnSuccess(Debug.Log);
+purpose.QueryBalanceOf("0x0101010101010101010101010101010101010101").OnSuccess(balance => Debug.Log(balance));
 ```
 
 The reason for the differences between libraries is due to the fact that the return types are different. The Unity return is of type ```EthCallPromise<T>``` while .NET Standard returns a ```Task<T>```. 
