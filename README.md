@@ -36,8 +36,8 @@ If you already have Nethereum in your project, only add the Hope.Ethereum.Unity 
     * <a href="#promises">Promises</a>
 * General
   * Ether 
-    * <a href="#ethtransfer">Ether Transfers</a>
-    * <a href="#ethbalance">Ether Balances</a>
+    * <a href="#ethtransfer">Transfers</a>
+    * <a href="#ethbalance">Balances</a>
   * Ethereum Tokens
     * <a href="#token-overview">Overview</a>
     * <a href="#token-init">Initialization</a>
@@ -46,10 +46,8 @@ If you already have Nethereum in your project, only add the Hope.Ethereum.Unity 
   * Utilities
     * <a href="#address-utils">Address Utilities</a>
     * <a href="#contract-utils">Contract Utilities</a>
-    * <a href="#eth-utils">Eth Utilities</a>
     * <a href="#gas-utils">Gas Utilities</a>
     * <a href="#solidity-utils">Solidity Utilities</a>
-    * <a href="#wallet-utils">Wallet Utilities</a>
     
 ## <a id="comparison"></a>.NET Standard vs Unity
 
@@ -238,7 +236,7 @@ Getting the Ether balance of an address in unity is very similar to the .NET Sta
 string address = "0x0000000000000000000000000000000000000000";
 
 // Print out the Ether balance
-EthUtils.GetEtherBalance(address).OnSuccess(Debug.Log);
+EthUtils.GetEtherBalance(address).OnSuccess(balance => Debug.Log(balance));
 ```
 ## <a id="token-overview"></a>Overview
 
@@ -346,15 +344,151 @@ The reason for the differences between libraries is due to the fact that the ret
 
 ## <a id="address-utils"></a>Address Utilities
 
+The ```EthUtils``` class implements a few useful methods for determining whether some code is a valid Ethereum address or transaction hash.
+
+Take a look at the following code.
+
+```c#
+// Check if the input text is a valid ethereum address.
+bool isEthAddress = AddressUtils.IsValidEthereumAddress("008rwebi341u");
+
+// Check if the input text is a valid transaction hash.
+bool isTransactionHash = AddressUtils.IsValidTransactionHash("0x0101010101010101010101010101010101010101");
+```
+
 ## <a id="contract-utils"></a>Contract Utilities
 
-## <a id="eth-utils"></a>Eth Utilities
+The ```ContractUtils``` class implements a few methods for generically interacting with Ethereum contracts. It is the core class that is used to drive our Ethereum token library.
+
+For example, the internal code used to query the name from an ethereum token looks like the following.
+
+Firstly, we need a class to mimic our function which we want to execute on the Ethereum contract.
+
+```c#
+[Function("name", "string")]
+public sealed class Name : FunctionMessage
+{
+}
+```
+
+We can pass an instance of this class into the ```ContractUtils.QueryContract``` to query the name.
+
+```c#
+// Our return type is a simple output of type string.
+// Once we retrieved our value from either the EthCallPromise or Task<SimpleOutputs.String> we access the 'Value' property for the true value.
+// We also do not need to add a sender address to the query.
+ContractUtils.QueryContract<Name, SimpleOutputs.String>(new Name(), "0xE41d2489571d322189246DaFA5ebDe1F4699F498", null);
+```
+
+The process for sending a message to an Ethereum contract is very similar. We can define our function using a class derived from ```FunctionMessage``` like with the ```Name``` class above.
+
+```c#
+[Function("transfer", "bool")]
+public sealed class Transfer : FunctionMessage
+{
+  [Parameter("address", "_to", 1)]
+  public string To { get; set; }
+
+  [Parameter("uint256", "_value", 2)]
+  public BigInteger Value { get; set; }
+}
+```
+
+We can then execute this code using the ```ContractUtils.SendContractMessage``` class.
+
+```c#
+string privateKey = "0x215939f9664cc1a2ad9f004abea96286e81e57fc2c21a8204a1462bec915be8f";
+BigInteger gasPrice = GasUtils.GetFunctionalGasPrice(2.5m);
+BigInteger gasLimit = 21000;
+
+Transfer transfer = new Transfer
+{
+  To = "0x0101010101010101010101010101010101010101",
+  Value = SolidityUtils.ConvertToUInt(1.54m, 18) // Send 1.48 of a specific token
+};
+
+// Execute the transfer function on the given contract address using the account under the private key.
+ContractUtils.SendContractMessage<Transfer>(transfer, "0xE41d2489571d322189246DaFA5ebDe1F4699F498", privateKey, gasPrice, gasLimit);
+```
+
+Take a look at the source code for the ```ERC20``` class for more concrete examples on how to execute contract messages and queries.
 
 ## <a id="gas-utils"></a>Gas Utilities
 
+The ```GasUtils``` class implements many methods for easily estimating gas prices and gas limits, as well as several others.
+
+You can easily estimate the current gas price using the following code.
+
+```c#
+BigInteger gasPrice = await GasUtils.EstimateGasPrice();
+```
+
+However, since the return type of the method is either ```EthCallPromise<BigInteger>``` or ```Task<BigInteger>``` the value will be unreadable. It is a functional gas price in the sense that it can be used to send a transaction without any issues, but it not very readable. 
+
+Take a look at the following code for getting the estimated gas price in readable format.
+
+```c#
+BigInteger functionalGasPrice = await GasUtils.EstimateGasPrice();
+decimal readableGasPrice = GasUtils.GetReadableGasPrice(functionalGasPrice);
+```
+
+You can easily convert to and from readable gas prices using the methods ```GasUtils.GetReadableGasPrice``` and ```GasUtils.GetFunctionalGasPrice```.
+
+You can also estimate the gas limit for a transaction using ```GasUtils.EstimateEthGasLimit``` and ```GasUtils.EstimateContractGasLimit```. 
+
+```GasUtils.EstimateEthGasLimit``` is very straight forward, only requiring you to enter the address you are sending the Ether to, as well as the Ether value (in wei) that you are sending. However, the ```GasUtils.EstimateContractGasLimit``` takes in a ```FunctionMessage```, much like the ```ContractUtils.SendContractMessage``` method.
+
+We can estimate the gas limit for a Token transfer function with the following code.
+
+We first define our ```FunctionMessage``` class, which in this case is the ERC20 transfer function.
+
+```c#
+[Function("transfer", "bool")]
+public sealed class Transfer : FunctionMessage
+{
+  [Parameter("address", "_to", 1)]
+  public string To { get; set; }
+
+  [Parameter("uint256", "_value", 2)]
+  public BigInteger Value { get; set; }
+}
+```
+
+We can now easily estimate the gas limit by filling in the required method parameters.
+
+```c#
+Transfer transfer = new Transfer
+{
+  To = "0x0101010101010101010101010101010101010101",
+  Value = SolidityUtils.ConvertToUInt(1.54m, 18) // Send 1.48 of a specific token
+};
+
+string contractAddress = "0xE41d2489571d322189246DaFA5ebDe1F4699F498";
+string senderAddress = "0xb332feee826bf44a431ea3d65819e31578f30446";
+
+BigInteger gasLimit = await GasUtils.EstimateGasLimit<Transfer>(transfer, contractAddress, senderAddress);
+```
+
+Those examples above are using the .NET Standard implementation of the Hope.Ethereum library. The same could be achieved in the Unity version through the use of the ```EthCallPromise``` class as well.
+
 ## <a id="solidity-utils"></a>Solidity Utilities
 
-## <a id="wallet-utils"></a>Wallet Utilities
+The ```SolidityUtils``` class implements a few methods which are useful for converting values to and from the respective solidity uint values.
+
+If you query a uint value from an Ethereum contract, you can convert it to a readable value using the following code.
+
+```c#
+// Convert the uint value '1000000000000000000000' to a readable value using 18 decimal places.
+// The standard is 18 decimal places. For example, all ether values on the blockchain are to 18 decimal places.
+decimal readableValue = SolidityUtils.ConvertFromUInt(1000000000000000000000, 18);
+```
+
+You can also convert a readable value back to the uint value using the following code.
+
+```c#
+// Convert Ether value of 2.62 back to a usable solidity value.
+BigInteger uintValue = SolidityUtils.ConvertToUInt(2.62m, 18);
+```
 
 ## Final Words
 
