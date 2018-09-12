@@ -29,6 +29,7 @@ namespace Hope.Ethereum.Utils
             where TFunc : FunctionMessage, new()
             where TOut : IFunctionOutputDTO, new()
         {
+            function.SetDefaultFromAddressIfNotSet(senderAddress);
             var queryHandler = new QueryToDTOHandler<TFunc, TOut>(NetworkProvider.GetWeb3().Client, senderAddress);
 
             return queryHandler.QueryAsync(contractAddress, function);
@@ -110,6 +111,9 @@ namespace Hope.Ethereum.Utils
             BigInteger value) where TFunc : FunctionMessage, new()
         {
             EthECKey ethECKey = new EthECKey(privateKey);
+            function.SetDefaultFromAddressIfNotSet(ethECKey.GetPublicAddress());
+            function.Gas = gasLimit;
+            function.GasPrice = gasPrice;
 
             InMemoryNonceService nonceService = new InMemoryNonceService(ethECKey.GetPublicAddress(), NetworkProvider.GetWeb3().Client);
 
